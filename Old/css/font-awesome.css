@@ -2166,7 +2166,7 @@
     content: "\e0b5";
 }
 
-.fa-blog::before {
+.fa-project::before {
     content: "\f781";
 }
 
@@ -17230,11 +17230,11 @@
     content: "\f37b";
 }
 
-.fa-blogger:before {
+.fa-projectger:before {
     content: "\f37c";
 }
 
-.fa-blogger-b:before {
+.fa-projectger-b:before {
     content: "\f37d";
 }
 
@@ -18118,7 +18118,7 @@
     content: "\e49b";
 }
 
-.fa-microblog:before {
+.fa-microproject:before {
     content: "\e01a";
 }
 
@@ -20562,7 +20562,7 @@
         content: "\e0b5\e0b5";
     }
 
-    .fad.fa-blog::after, .fa-duotone.fa-blog::after {
+    .fad.fa-project::after, .fa-duotone.fa-project::after {
         content: "\f781\f781";
     }
 
