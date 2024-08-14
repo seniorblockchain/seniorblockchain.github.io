@@ -10,21 +10,21 @@ const testimonialsData = [
     customerName: "John Watkins",
     customerTitle: "Founder of Dashflow",
     content:
-      "The powerful analytic tools have helped us streamline our processes and make data-driven decisions that positively impact our efficiency. Tailcast has been a game-changer for our business. The platform is easy to use, and the insights we've gained have driven significant improvements.",
+      "The powerful analytic tools have helped us streamline our processes and make data-driven decisions that positively impact our efficiency. SeniorBlockchain has been a game-changer for our business. The platform is easy to use, and the insights we've gained have driven significant improvements.",
     image: testimonial1,
   },
   {
     customerName: "John Watkins",
     customerTitle: "Founder of Dashflow",
     content:
-      "The powerful analytic tools have helped us streamline our processes and make data-driven decisions that positively impact our efficiency. Tailcast has been a game-changer for our business. The platform is easy to use, and the insights we've gained have driven significant improvements.",
+      "The powerful analytic tools have helped us streamline our processes and make data-driven decisions that positively impact our efficiency. SeniorBlockchain has been a game-changer for our business. The platform is easy to use, and the insights we've gained have driven significant improvements.",
     image: testimonial2,
   },
   {
     customerName: "John Watkins",
     customerTitle: "Founder of Dashflow",
     content:
-      "The powerful analytic tools have helped us streamline our processes and make data-driven decisions that positively impact our efficiency. Tailcast has been a game-changer for our business. The platform is easy to use, and the insights we've gained have driven significant improvements.",
+      "The powerful analytic tools have helped us streamline our processes and make data-driven decisions that positively impact our efficiency. SeniorBlockchain has been a game-changer for our business. The platform is easy to use, and the insights we've gained have driven significant improvements.",
     image: testimonial3,
   },
 ];
@@ -41,7 +41,7 @@ export const Testimonials = () => (
       >
         <div className="block-subtitle text-center mb-6">Testimonials</div>
         <div className="block-big-title text-center mb-20 px-8 sm:px-24 md:px-48">
-          People like you love Tailcast
+          People like you love SeniorBlockchain
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-5 xl:gap-10 px-6 xl:px-0 items-center">
