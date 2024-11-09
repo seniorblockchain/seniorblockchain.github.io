@@ -17,17 +17,7 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
 
-  // Initialize TonConnect UI
-  const tonConnect = new TonConnectUI({
-    manifestUrl: "https://your-app-url/tonconnect-manifest.json",
-    buttonRootId: "connectWalletButton",
-  });
-
-  const connectWallet = () => {
-    tonConnect.connect();
-  };
-
-
+  
   return (
     <nav
       className="w-full h-20 flex flex-col justify-center items-center fixed bg-bgDark1 lg:bg-bgDarkTransparent z-40 lg:backdrop-blur-xl"
