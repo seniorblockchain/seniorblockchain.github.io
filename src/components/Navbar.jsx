@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { SeniorBlockchainLogo } from "../assets/logos/SeniorBlockchainLogo";
 import { GithubIcon } from "../assets/icons/GithubIcon";
+import { WalletIcon } from "../assets/icons/WalletIcon";
 
 const navbarLinks = [
   { label: "Home", href: "/#home", ariaLabel: "Home" },
@@ -67,12 +68,11 @@ export const Navbar = () => {
             <a
               className="text-white main-border-gray rounded-xl
            bg-bgDark2 hover:bg-bgDark3  border-gray-700 pl-6 pr-8 pt-2 pb-2 text-sm flex"
-              href="https://github.com/seniorblockchain"
-              target="_blank"
-              aria-label="source code"
+              href="#"
+              aria-label="Connect Wallet"
             >
-              <GithubIcon />
-              <span className="pt-px">Source code</span>
+              <WalletIcon />
+              <span className="pt-px">Connect Wallet</span>
             </a>
           </div>
         </motion.div>
@@ -112,11 +112,10 @@ export const Navbar = () => {
               ))}
               <a
                 className="outlined-button pl-6 pr-8 pt-2 pb-2  flex"
-                href="https://github.com/matt765/Tidestream"
-                target="_blank"
+                href="#"
               >
-                <GithubIcon />
-                Source code
+                <WalletIcon />
+                Connect Wallet
               </a>
             </div>
           </motion.div>
