@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TonConnectUI } from "@tonconnect/ui";
+import WalletService from "../services/WalletService";
 import { SeniorBlockchainLogo } from "../assets/logos/SeniorBlockchainLogo";
 import { WalletIcon } from "../assets/icons/WalletIcon";
 
@@ -14,40 +14,32 @@ const navbarLinks = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [tonConnect, setTonConnect] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [isClient, setIsClient] = useState(false); // To handle SSR
 
+  // Check the connection status on the client side
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedConnectionStatus = JSON.parse(localStorage.getItem("isConnected"));
-      setIsConnected(storedConnectionStatus || false);
+    setIsClient(true); // Mark that the component has mounted on the client
 
-      const tonConnectInstance = new TonConnectUI({
-        manifestUrl: "https://seniorblockchain.io/tonconnect-manifest.json",
-      });
-      setTonConnect(tonConnectInstance);
+    if (WalletService.getConnectionStatus()) {
+      setIsConnected(true);
     }
   }, []);
 
   const connectWallet = async () => {
-    if (tonConnect && !isConnected) {
-      try {
-        await tonConnect.connectWallet();
-        setIsConnected(true);
-        localStorage.setItem("isConnected", true);
-      } catch (error) {
-        console.error("Wallet connection failed:", error);
-      }
-    }
+    await WalletService.connectWallet();
+    setIsConnected(WalletService.getConnectionStatus());
   };
 
   const disconnectWallet = () => {
-    if (tonConnect) {
-      tonConnect.disconnect();
-      setIsConnected(false);
-      localStorage.setItem("isConnected", false);
-    }
+    WalletService.disconnectWallet();
+    setIsConnected(WalletService.getConnectionStatus());
   };
+
+  if (!isClient) {
+    // Render a placeholder during SSR to avoid mismatches
+    return null;
+  }
 
   return (
     <nav
@@ -102,47 +94,7 @@ export const Navbar = () => {
             )}
           </div>
         </motion.div>
-
-        <div
-          className="lg:hidden flex flex-col px-2 py-3 border-solid border border-gray-600 rounded-md cursor-pointer hover:bg-bgDark2"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <div className="w-5 h-0.5 bg-gray-500 mb-1"></div>
-          <div className="w-5 h-0.5 bg-gray-500 mb-1"></div>
-          <div className="w-5 h-0.5 bg-gray-500"></div>
-        </div>
       </div>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} exit={{ opacity: 0 }}>
-            <div className="flex flex-col mt-16 lg:hidden absolute top-4 left-0 bg-bgDark1 z-50 w-full items-center gap-10 pb-10 border-y border-solid border-bgDark3 pt-10">
-              {navbarLinks.map(({ label, href, ariaLabel }) => (
-                <a
-                  key={href}
-                  className="text-white lg:text-base text-2xl leading-6 mr-4 ml-4 2xl:mr-6 2xl:ml-6 cursor-pointer font-normal lg:font-medium hover:scale-110 transition duration-300 h-full pt-2"
-                  href={href}
-                  onClick={() => setIsOpen(false)}
-                  aria-label={ariaLabel}
-                >
-                  {label}
-                </a>
-              ))}
-              {isConnected ? (
-                <button onClick={disconnectWallet} className="outlined-button pl-6 pr-8 pt-2 pb-2 flex">
-                  <WalletIcon />
-                  Disconnect Wallet
-                </button>
-              ) : (
-                <button onClick={connectWallet} className="outlined-button pl-6 pr-8 pt-2 pb-2 flex">
-                  <WalletIcon />
-                  Connect Wallet
-                </button>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </nav>
   );
 };
