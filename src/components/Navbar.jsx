@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TonConnectUI } from "@tonconnect/ui"; // Correct import
+import { TonConnectUI } from "@tonconnect/ui";
 import { SeniorBlockchainLogo } from "../assets/logos/SeniorBlockchainLogo";
-import { GithubIcon } from "../assets/icons/GithubIcon";
 import { WalletIcon } from "../assets/icons/WalletIcon";
 
 const navbarLinks = [
@@ -20,7 +19,9 @@ export const Navbar = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // Initialize TonConnect
+      const storedConnectionStatus = JSON.parse(localStorage.getItem("isConnected"));
+      setIsConnected(storedConnectionStatus || false);
+
       const tonConnectInstance = new TonConnectUI({
         manifestUrl: "https://seniorblockchain.io/tonconnect-manifest.json",
       });
@@ -29,10 +30,11 @@ export const Navbar = () => {
   }, []);
 
   const connectWallet = async () => {
-    if (tonConnect) {
+    if (tonConnect && !isConnected) {
       try {
         await tonConnect.connectWallet();
         setIsConnected(true);
+        localStorage.setItem("isConnected", true);
       } catch (error) {
         console.error("Wallet connection failed:", error);
       }
@@ -43,6 +45,7 @@ export const Navbar = () => {
     if (tonConnect) {
       tonConnect.disconnect();
       setIsConnected(false);
+      localStorage.setItem("isConnected", false);
     }
   };
 
@@ -52,21 +55,17 @@ export const Navbar = () => {
       aria-label="Main navigation"
     >
       <div className="2xl:w-[1280px] xl:w-10/12 w-11/12 flex justify-between items-center relative">
-        {/* Logo */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} exit={{ opacity: 0 }}>
           <a href="/#home" aria-label="Home">
             <div className="flex justify-start items-center grow basis-0">
               <div className="text-white mr-2 text-6xl">
                 <SeniorBlockchainLogo />
               </div>
-              <div className="text-white font-['Inter'] font-bold text-xl">
-                Senior Blockchain
-              </div>
+              <div className="text-white font-['Inter'] font-bold text-xl">Senior Blockchain</div>
             </div>
           </a>
         </motion.div>
 
-        {/* Navbar Links */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} exit={{ opacity: 0 }}>
           <div className="hidden lg:flex h-full pl-12 pb-2">
             {navbarLinks.map(({ href, label, ariaLabel }) => (
@@ -82,7 +81,6 @@ export const Navbar = () => {
           </div>
         </motion.div>
 
-        {/* Wallet Connect Button */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} exit={{ opacity: 0 }}>
           <div className="grow basis-0 justify-end hidden lg:flex">
             {isConnected ? (
@@ -105,7 +103,6 @@ export const Navbar = () => {
           </div>
         </motion.div>
 
-        {/* Mobile Menu Toggle */}
         <div
           className="lg:hidden flex flex-col px-2 py-3 border-solid border border-gray-600 rounded-md cursor-pointer hover:bg-bgDark2"
           onClick={() => setIsOpen(!isOpen)}
@@ -116,7 +113,6 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navbar */}
       <AnimatePresence>
         {isOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} exit={{ opacity: 0 }}>
