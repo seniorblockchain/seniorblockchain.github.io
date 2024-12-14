@@ -6,27 +6,24 @@ import { Features1 } from '../components/Features1.jsx'
 import { Features2 } from '../components/Features2.jsx'
 import { Testimonials } from '../components/Testimonials.jsx'
 import { FeaturesDiagonal } from '../components/FeaturesDiagonal.jsx'
-import { Pricing } from '../components/Pricing.jsx'
+import { Tokenomics } from '../components/Tokenomics.jsx'
 import { FAQ } from '../components/FAQ.jsx'
 import { Brands } from '../components/Brands.jsx'
-import { Project } from '../components/Project'
+import { Blog } from '../components/Blog'
 import { Footer } from '../components/Footer.jsx'
 import { ScrollUpButton } from '../components/ScrollUpButton'
 import '../styles/Theme.css'
 import '../styles/Diagonals.css'
 ---
 
-<Layout title="Senior Blockchain">
+<Layout title="Senior Blockchain Company">
   <Navbar client:load />
   <Hero client:load />
   <Features1 client:load />
   <Features2 client:load />
   <FeaturesDiagonal client:load />
-  <Pricing client:load />
-  <Brands client:load />
-  <Testimonials client:load />
-  <Project client:load />
+  <Tokenomics client:load />
   <FAQ client:load /> 
-  <Footer />
+  <Footer client:load />
   <ScrollUpButton client:load />
 </Layout>

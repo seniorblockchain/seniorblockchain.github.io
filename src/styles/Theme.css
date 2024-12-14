@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Typography */
 
 .block-title {
@@ -29,15 +33,40 @@
 }
 
 /* Buttons */
-
-.contained-button {
-  @apply rounded-lg font-bold bg-primaryColor text-primaryText flex justify-center items-center hover:bg-[#7274f3] cursor-pointer transition;
+@layer components {
+  .contained-button {
+    border-radius: 0.5rem;
+    font-weight: 700;
+    background-color: var(--primary-color);
+    color: var(--primary-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .outlined-button {
+    @apply text-primaryText main-border-gray rounded-xl bg-bgDark2 hover:bg-bgDark3 border-gray-700 text-sm;
+  }
 }
-.outlined-button {
-  @apply text-primaryText main-border-gray rounded-xl bg-bgDark2 hover:bg-bgDark3  border-gray-700 text-sm;
+
+@layer utilities {
+  .hover\:bg-primaryHover:hover {
+    background-color: rgb(0, 112, 188); /* Define the hover color */
+  }
 }
 
-/* Preventing FOUC */
 @font-face {
   font-display: var(--fontsource-Inter-font-display, optional);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; 
 }

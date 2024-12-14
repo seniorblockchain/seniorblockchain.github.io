@@ -5,7 +5,7 @@ import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import "@fontsource/inter/900.css";
-
+import 'overlayscrollbars/overlayscrollbars.css';
 export interface Props {
   title: string;
 }
@@ -14,19 +14,25 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="bg-bgDark2">
+<html lang="en" class="bg-bgDark2" data-overlayscrollbars-initialize>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta
       name="description"
-      content="Welcome to our website! We offer innovative investment opportunities in real estate and blockchain technology. Join us to benefit from our direct property investment and Senior token options. Experience growth, transparency, and profitability with Senior Blockchain Company LLC."
+      content="Reliable Investment Access, Liberating"
     />
     <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="bg-bgDark2">
+  <body class="bg-bgDark2" data-overlayscrollbars-initialize>
     <main aria-label="Main content">
       <slot />
     </main>
@@ -40,3 +46,25 @@ const { title } = Astro.props;
     </style>
   </body>
 </html>
+
+<script>
+import { OverlayScrollbars } from "overlayscrollbars";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const bodyElement = document.querySelector('body');
+
+  OverlayScrollbars(
+    {
+      target: bodyElement,
+      cancel: {
+        nativeScrollbarsOverlaid: true,   
+      }
+    }, {
+    scrollbars: {
+      autoHide: 'move',
+      autoHideDelay: 500,
+      autoHideSuspend: false,
+    },
+  });
+});
+</script>

@@ -1,0 +1,21 @@
+---
+import { Footer } from "../../components/Footer";
+import { Navbar } from "../../components/Navbar";
+import { ScrollUpButton } from "../../components/ScrollUpButton";
+import Layout from "../../layouts/Layout.astro";
+import '../../styles/Theme.css';
+  import { Buy } from "../../components/Buy";
+import { Page } from "../../components/Page";
+  const pageData = {
+  title: "Buy SBC",
+  subtitle: "Securely connect your wallet and send USDT effortlessly.",
+};
+---
+ 
+<Layout title="Buy SBC">
+  <Navbar client:load />
+  <Page pageData={pageData} />
+  <Buy client:load/>
+  <Footer />
+  <ScrollUpButton client:load />
+</Layout>

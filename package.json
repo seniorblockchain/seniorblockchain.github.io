@@ -1,13 +1,13 @@
 {
-  "name": "seniorblockchain",
+  "name": "sbc",
   "type": "module",
-  "version": "1.0.2",
+  "version": "0.0.1",
   "license": "MIT",
-  "description": "Dark themed website template built on AstroJS, designed for fictional startup",
+  "description": "Senior Blockchain Company",
   "author": {
-    "name": "Mateusz Wyrębek (matt765)",
-    "email": "mateusz.wyrebek@gmail.com",
-    "url": "https://matt765-portfolio.vercel.app/"
+    "name": "Senior Blockchain Company",
+    "email": "info@seniorblockchain.io",
+    "url": "https://seniorblockchain.io/"
   },
   "private": true,
   "scripts": {
@@ -18,23 +18,53 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/tailwind": "^5.1.2",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
-    "@fontsource/inter": "^5.0.18",
+    "@fontsource/inter": "^5.1.0",
     "@tonconnect/sdk": "^3.0.5",
     "@tonconnect/ui": "^2.0.9",
-    "astro": "^4.12.2",
+    "@tonconnect/ui-react": "^2.0.9",
+    "@types/overlayscrollbars": "^1.12.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vite-pwa/astro": "^0.4.3",
+    "astro": "^4.16.13",
     "buffer": "^6.0.3",
-    "framer-motion": "^11.2.10",
-    "npm": "^10.8.1",
-    "npm-check-updates": "^16.14.20",
-    "tailwindcss": "^3.4.3",
+    "framer-motion": "^11.11.17",
+    "gasp": "^0.0.2",
+    "gsap": "^3.12.5",
+    "npm": "^10.9.0",
+    "npm-check-updates": "^17.1.11",
+    "overlayscrollbars": "^2.10.0",
+    "overlayscrollbars-react": "^0.5.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "ton": "^13.9.0",
     "tonweb": "^0.0.66",
-    "vite-plugin-node-polyfills": "^0.22.0"
+    "typescript": "^4.9.5",
+    "uuid": "^11.0.3",
+    "vite-plugin-node-polyfills": "^0.22.0",
+    "webpack": "^5.96.1"
   },
   "devDependencies": {
-    "@astrojs/react": "^3.6.0",
+    "@astrojs/react": "^3.6.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.16"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

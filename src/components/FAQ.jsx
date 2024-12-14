@@ -3,24 +3,39 @@ import { motion } from "framer-motion";
 
 const FAQData = [
   {
-    question: "Can I upgrade or downgrade my plan at any time?",
+    question: "What is SBC?",
     answer:
-      "Yes, you can easily upgrade or downgrade your plan at any time. Simply navigate to the account settings in your dashboard and choose the desired plan. The changes will be reflected immediately, and any adjustments in pricing will be applied on your next billing cycle. Our support team is more than happy to provide guidance and recommendations.",
+      "SBC (SBC) is a blockchain-based cryptocurrency developed on the TON network. It is designed to revolutionize asset management by providing a secure, transparent, and efficient platform for online transactions, staking, and more.",
   },
   {
-    question: "How to claim your 25% discount offer?",
+    question: "How can I purchase SBC?",
     answer:
-      "To claim your 25% discount, simply sign up for an account and enter the promotional code at checkout. The discount will be applied automatically to your purchase.",
+      "You can purchase SBC during the Initial Coin Offering (ICO) or through cryptocurrency exchanges where SBC is listed. Ensure you have a compatible TON-compatible wallet to store your SBC tokens securely.",
   },
   {
-    question: "What's your refund policy?",
+    question: "What are the use cases for SBC?",
     answer:
-      "We offer a 30-day money-back guarantee on all our plans. If you're not satisfied with our product, simply contact our support team within 30 days of purchase for a full refund.",
+      "SBC can be used for a variety of purposes, including online shopping, digital content purchases, metaverse integration, in-app purchases, peer-to-peer transactions, loyalty programs, and event ticketing. Its versatility allows it to be integrated seamlessly into various industries.",
   },
   {
-    question: "How to get support for the product?",
+    question: "How secure is SBC?",
     answer:
-      "Our dedicated support team is here to help. You can reach out to us through the contact form on our website, send an email, or engage with us via live chat. We'll be happy to assist you with any questions or concerns you may have",
+      "SBC leverages the security features of blockchain technology, including decentralized ledger systems and smart contracts, to ensure tamper-proof transactions and data safety. Additional layers of encryption and secure protocols make SBC a highly secure digital currency.",
+  },
+  {
+    question: "Does SBC support staking?",
+    answer:
+      "Yes, SBC supports staking programs where token holders can participate in the network, secure the blockchain, and earn SBC rewards as incentives.",
+  },
+  {
+    question: "What is SBC’s role in the metaverse?",
+    answer:
+      "SBC is designed to be a versatile currency for the metaverse, enabling users to purchase virtual assets like land, avatars, and services. It facilitates seamless transactions within virtual ecosystems while fostering a vibrant digital economy.",
+  },
+  {
+    question: "How can I stay updated on SBC developments?",
+    answer:
+      "Stay informed by following SBC on social media platforms like Twitter, Telegram, and Discord. You can also visit our official website and subscribe to our newsletter for the latest updates and announcements.",
   },
 ];
 
@@ -62,11 +77,11 @@ const FAQBox = ({ defaultOpen, title, content }) => {
 
   return (
     <div
-      className="pt-2 sm:pt-6 pb-2 px-3 sm:px-8  rounded-3xl bg-bgDark3 main-border-gray-darker mb-4 relative hover:bg-bgDark3Hover cursor-pointer transition"
+      className="pt-2 sm:pt-6 pb-2 px-3 sm:px-8 rounded-3xl bg-bgDark3 main-border-gray-darker mb-4 relative hover:bg-bgDark3Hover cursor-pointer transition"
       onClick={() => setIsOpen(!isOpen)}
     >
-      <div className="flex flex-col p-2  justify-center items-start">
-        <h3 className=" content-title pt-3 sm:pt-0 pr-8 sm:pr-0">{title}</h3>
+      <div className="flex flex-col p-2 justify-center items-start">
+        <h3 className="content-title pt-3 sm:pt-0 pr-8 sm:pr-0">{title}</h3>
         <p
           className={`text-secondaryText pt-4 transition-height duration-300 overflow-hidden ${
             isOpen ? "max-h-96" : "max-h-0"
@@ -82,7 +97,7 @@ const FAQBox = ({ defaultOpen, title, content }) => {
           viewBox="0 0 20 20"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className={`transition-all duration-500  ${
+          className={`transition-all duration-500 ${
             isOpen ? "rotate-[180deg]" : "rotate-[270deg]"
           }`}
         >
