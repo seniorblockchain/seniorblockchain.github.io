@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { TonConnectButton, useTonConnectUI, useTonAddress } from "@tonconnect/ui-react";
-import { handleSendSBC } from "../payments/sendSBC";
+import {useTonConnectUI, useTonAddress } from "@tonconnect/ui-react";
 import { CustomConnectButton } from "./CustomConnectButton";
 
 const Receive: React.FC = () => {

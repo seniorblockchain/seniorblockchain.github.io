@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TonConnectButton, useTonConnectUI, useTonAddress } from "@tonconnect/ui-react";
+import { useTonConnectUI, useTonAddress } from "@tonconnect/ui-react";
 import { handleSendUsdt } from "../payments/sendUsdt";
 import { CustomConnectButton } from "./CustomConnectButton";
 
