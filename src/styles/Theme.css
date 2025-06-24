@@ -2,25 +2,103 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Professional Exchange Styles */
+@layer base {
+  * {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  /* Modern Glass Effect */
+  .glass-effect {
+    @apply backdrop-blur-md bg-white/5 border border-white/10;
+  }
+  
+  /* Professional Card */
+  .professional-card {
+    @apply bg-gradient-to-br from-bgDark2/80 to-bgDark3/80 backdrop-blur-sm border border-mainBorder rounded-2xl shadow-xl;
+  }
+  
+  /* Exchange Panel */
+  .exchange-panel {
+    @apply professional-card p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-primaryColor/10;
+  }
+  
+  /* Trading Input */
+  .trading-input {
+    @apply bg-transparent text-2xl font-bold text-primaryText placeholder-secondaryText focus:outline-none focus:ring-2 focus:ring-primaryColor/50 rounded-lg p-4 border border-mainBorder transition-all duration-300;
+  }
+  
+  /* Professional Button */
+  .professional-button {
+    @apply font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-opacity-50;
+  }
+  
+  /* Primary Professional Button */
+  .professional-button-primary {
+    @apply professional-button bg-gradient-to-r from-primaryColor to-secondaryColor hover:from-secondaryColor hover:to-primaryColor text-white shadow-lg hover:shadow-primaryColor/25;
+  }
+  
+  /* Secondary Professional Button */
+  .professional-button-secondary {
+    @apply professional-button bg-transparent border-2 border-primaryColor hover:bg-primaryColor text-primaryColor hover:text-white;
+  }
+  
+  /* Danger Professional Button */
+  .professional-button-danger {
+    @apply professional-button bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white shadow-lg hover:shadow-red-500/25;
+  }
+  
+  /* Status Indicators */
+  .status-online {
+    @apply bg-green-600/20 text-green-400 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2;
+  }
+  
+  .status-offline {
+    @apply bg-red-600/20 text-red-400 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2;
+  }
+  
+  /* Market Stats Card */
+  .market-stat-card {
+    @apply professional-card p-4 text-center hover:bg-bgDark2/60 transition-all duration-300;
+  }
+  
+  /* Responsive Grid */
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6;
+  }
+  
+  /* Professional Sidebar */
+  .professional-sidebar {
+    @apply space-y-6 lg:sticky lg:top-6;
+  }
+}
+
 /* Typography */
 
 .block-title {
-  @apply text-primaryText text-3xl font-bold tracking-normal;
+  @apply text-primaryText text-3xl lg:text-4xl font-bold tracking-tight;
 }
 .block-big-title {
-  @apply text-primaryText text-4xl xl:text-5xl font-bold tracking-normal;
+  @apply text-primaryText text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight;
 }
 .block-subtitle {
-  @apply text-xs text-secondaryColor  tracking-wider font-bold uppercase;
+  @apply text-xs text-secondaryColor tracking-wider font-bold uppercase;
 }
 .content-title {
-  @apply text-primaryText text-lg font-bold tracking-normal;
+  @apply text-primaryText text-lg lg:text-xl font-bold tracking-normal;
 }
 .content-text-white {
-  @apply text-primaryText text-base leading-relaxed;
+  @apply text-primaryText text-base lg:text-lg leading-relaxed;
 }
 .content-text-gray {
-  @apply text-gray-400 text-base;
+  @apply text-gray-400 text-base lg:text-lg leading-relaxed;
 }
 
 /* Borders */
@@ -32,28 +110,57 @@
   @apply border border-solid border-mainBorderDarker;
 }
 
-/* Buttons */
+/* Enhanced Buttons */
 @layer components {
   .contained-button {
-    border-radius: 0.5rem;
-    font-weight: 700;
-    background-color: var(--primary-color);
-    color: var(--primary-text);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    @apply professional-button-primary;
   }
   .outlined-button {
-    @apply text-primaryText main-border-gray rounded-xl bg-bgDark2 hover:bg-bgDark3 border-gray-700 text-sm;
+    @apply professional-button-secondary;
   }
 }
 
 @layer utilities {
   .hover\:bg-primaryHover:hover {
-    background-color: rgb(0, 112, 188); /* Define the hover color */
+    background-color: rgb(0, 112, 188);
+  }
+  
+  /* Animation utilities */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  /* Scrollbar styling */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px rgba(0, 136, 204, 0.3);
+  }
+  to {
+    box-shadow: 0 0 30px rgba(0, 136, 204, 0.6);
   }
 }
 
@@ -61,6 +168,7 @@
   font-display: var(--fontsource-Inter-font-display, optional);
 }
 
+/* Form inputs */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -69,4 +177,52 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield; 
+}
+
+/* Professional focus states */
+input:focus, button:focus, a:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.menu-dropdown a:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Responsive text scaling */
+@media (max-width: 640px) {
+  .text-responsive-xl {
+    @apply text-2xl;
+  }
+  .text-responsive-2xl {
+    @apply text-3xl;
+  }
+  .text-responsive-3xl {
+    @apply text-4xl;
+  }
+}
+
+@media (min-width: 641px) {
+  .text-responsive-xl {
+    @apply text-xl;
+  }
+  .text-responsive-2xl {
+    @apply text-2xl;
+  }
+  .text-responsive-3xl {
+    @apply text-3xl;
+  }
+}
+
+/* Professional loading states */
+.loading-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }

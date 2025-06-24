@@ -8,6 +8,7 @@ const navbarLinks = [
   { label: "Home", href: "/#home", ariaLabel: "Home" },
   { label: "Features", href: "/#features", ariaLabel: "Features" },
   { label: "FAQ", href: "/#FAQ", ariaLabel: "FAQ" },
+  { label: "Buy", href: "/buy", ariaLabel: "Buy SBC" },
 ];
 
 export const Navbar = () => {
@@ -15,101 +16,114 @@ export const Navbar = () => {
 
   return (
     <nav
-      className="w-full h-20 flex flex-col justify-center items-center fixed bg-bgDark1 lg:bg-bgDarkTransparent z-40 lg:backdrop-blur-xl"
+      className="w-full h-20 flex flex-col justify-center items-center fixed bg-bgDark1/95 backdrop-blur-xl border-b border-mainBorder z-50 shadow-xl"
       aria-label="Main navigation"
     >
-      <div className="w-full max-w-[1280px] flex justify-between items-center px-4 md:px-8">
+      <div className="w-full max-w-7xl flex justify-between items-center px-4 sm:px-6 lg:px-8">
         {/* Logo Section */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center space-x-3"
         >
-          <a href="/#home" aria-label="Home" className="flex items-center">
-            <SBCLogo className="text-white text-4xl mr-4" />
-            <span className="text-white font-bold text-lg ml-4">SBC</span>
+          <a href="/#home" aria-label="Home" className="flex items-center group">
+            <div className="bg-gradient-to-r from-primaryColor to-secondaryColor p-2 rounded-xl group-hover:shadow-lg group-hover:shadow-primaryColor/25 transition-all duration-300">
+              <SBCLogo className="text-white text-2xl" />
+            </div>
+            <div className="ml-3">
+              <span className="text-white font-bold text-xl tracking-tight">SBC</span>
+              <div className="text-primaryColor text-xs font-medium">Senior Blockchain Company</div>
+            </div>
           </a>
         </motion.div>
 
         {/* Desktop Navigation Links */}
         <motion.div
-          className="hidden lg:flex"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
+          className="hidden lg:flex items-center space-x-8"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
         >
-          {navbarLinks.map(({ href, label, ariaLabel }) => (
-            <a
+          {navbarLinks.map(({ href, label, ariaLabel }, index) => (
+            <motion.a
               key={label}
               href={href}
               aria-label={ariaLabel}
-              className="text-white font-medium text-base mx-4 hover:underline transition"
+              className="text-secondaryText hover:text-primaryColor font-medium text-sm uppercase tracking-wider transition-all duration-300 relative group"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 + index * 0.1 }}
             >
               {label}
-            </a>
-          ))}
-        </motion.div>
-
-        {/* Desktop Button */}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primaryColor to-secondaryColor group-hover:w-full transition-all duration-300"></span>
+            </motion.a>
+          ))}        </motion.div>        {/* Desktop Action Buttons */}
         <motion.div
-          className="hidden lg:flex"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
+          className="hidden lg:flex items-center space-x-4"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
         >
           <a
             href="/buy"
-            aria-label="Invest in SBC"
-            className="text-white main-border-gray rounded-xl bg-bgDark2 hover:bg-bgDark3 border-gray-700 pl-6 pr-8 pt-2 pb-2 text-sm flex"
+            aria-label="Buy SBC"
+            className="bg-gradient-to-r from-primaryColor to-secondaryColor hover:from-secondaryColor hover:to-primaryColor text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-primaryColor/25 flex items-center gap-2"
           >
-            <WalletIcon className="mr-2" />
-            Invest in SBC
+            <WalletIcon className="w-4 h-4" />
+            Buy SBC
           </a>
         </motion.div>
 
         {/* Mobile Menu Toggle */}
-        <button
-          className="lg:hidden flex flex-col space-y-1 focus:outline-none"
+        <motion.button
+          className="lg:hidden flex flex-col justify-center items-center w-8 h-8 focus:outline-none group"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
         >
-          <span className="w-6 h-0.5 bg-white"></span>
-          <span className="w-6 h-0.5 bg-white"></span>
-          <span className="w-6 h-0.5 bg-white"></span>
-        </button>
+          <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+          <span className={`w-6 h-0.5 bg-white my-1 transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}></span>
+          <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+        </motion.button>
       </div>
 
       {/* Mobile Navbar */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="absolute top-20 left-0 w-full bg-[#027dbc] flex flex-col items-center py-6"
-            initial={{ opacity: 0, y: -20 }}
+            className="menu-dropdown absolute right-4 top-16 w-56 bg-bgDark2 border border-mainBorder rounded-xl shadow-2xl z-50 flex flex-col items-stretch py-3"
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
           >
-            {navbarLinks.map(({ label, href, ariaLabel }) => (
-              <a
+            {navbarLinks.map(({ label, href, ariaLabel }, index) => (
+              <motion.a
                 key={label}
                 href={href}
                 aria-label={ariaLabel}
                 onClick={() => setIsOpen(false)}
-                className="text-white text-lg font-medium my-2 hover:underline transition"
+                className="px-5 py-2 text-secondaryText hover:text-primaryColor text-base font-medium transition-all duration-200 rounded-lg hover:bg-bgDark3 text-left"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: index * 0.05 }}
               >
                 {label}
-              </a>
+              </motion.a>
             ))}
-            <a
+            <motion.a
               href="/buy"
-              target="_blank"
-           
-              className="text-white main-border-gray rounded-xl bg-bgDark2 hover:bg-bgDark3 border-gray-700 pl-6 pr-8 pt-2 pb-2 text-sm flex"
-                        aria-label="Invest in SBC"
+              onClick={() => setIsOpen(false)}
+              className="mx-4 mt-2 bg-gradient-to-r from-primaryColor to-secondaryColor text-white font-bold py-2 rounded-lg text-center text-base transition-all duration-200"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, delay: 0.2 }}
             >
-              <WalletIcon className="mr-2" />
-              Invest in SBC
-            </a>
+              Buy SBC
+            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>
