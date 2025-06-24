@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 
 export const Hero = () => {
-
   return (
     <section
       className="w-screen flex justify-center items-center bg-gradient-to-br from-bgDark1 via-bgDark2 to-bgDark3 min-h-screen relative overflow-hidden"
@@ -10,7 +9,6 @@ export const Hero = () => {
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-r from-primaryColor/10 via-transparent to-secondaryColor/10"></div>
       <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primaryColor/5 via-transparent to-transparent"></div>
-      
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center pt-20 md:pt-28 lg:pt-32 text-center relative z-10">
         {/* Main Headline */}
         <motion.div
@@ -19,9 +17,14 @@ export const Hero = () => {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="mb-8"
         >
-          <h1 className="text-4xl xs:text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[1.1] tracking-tight">
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-[1.1] tracking-tight drop-shadow-lg">
             <span className="block mb-2">Decentralize Everything</span>
-            <span className="block">with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primaryColor to-secondaryColor">SBC</span></span>
+            <span className="block">
+              with{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primaryColor to-secondaryColor">
+                SBC
+              </span>
+            </span>
           </h1>
         </motion.div>
         {/* Investment Description */}
@@ -31,12 +34,13 @@ export const Hero = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="mb-12"
         >
-          <div className="max-w-4xl mx-auto">
-            <p className="text-base sm:text-lg lg:text-xl text-secondaryText leading-relaxed mb-4 font-medium">
+          <div className="max-w-3xl mx-auto bg-bgDark2/60 rounded-2xl p-6 shadow-xl">
+            <p className="text-lg sm:text-2xl lg:text-3xl text-secondaryText leading-relaxed mb-4 font-semibold">
               Invest in SBC and access the future of decentralized finance.
             </p>
-            <p className="text-sm sm:text-base lg:text-lg text-secondaryText leading-relaxed opacity-90">
-              Buy SBC tokens to join a trusted blockchain ecosystem and benefit from real project growth.
+            <p className="text-base sm:text-lg lg:text-xl text-secondaryText leading-relaxed opacity-90">
+              Buy SBC tokens to join a trusted blockchain ecosystem and benefit
+              from real project growth.
             </p>
           </div>
         </motion.div>
@@ -50,12 +54,22 @@ export const Hero = () => {
           {/* Buy Button */}
           <a
             href="/buy"
-            className="group relative overflow-hidden bg-gradient-to-r from-primaryColor to-secondaryColor hover:from-secondaryColor hover:to-primaryColor text-white font-bold py-4 px-12 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-primaryColor/25"
+            className="group relative overflow-hidden bg-gradient-to-r from-primaryColor to-secondaryColor hover:from-secondaryColor hover:to-primaryColor text-white font-bold py-4 px-12 rounded-2xl text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-primaryColor/25 shadow-lg"
             aria-label="Buy SBC"
           >
             <span className="relative z-10 flex items-center justify-center gap-3">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
               </svg>
               Invest in SBC
             </span>
@@ -68,8 +82,11 @@ export const Hero = () => {
           transition={{ duration: 0.8, delay: 0.9 }}
           className="text-center max-w-3xl mx-auto"
         >
-          <p className="text-secondaryText text-sm lg:text-base leading-relaxed">
-            <strong className="text-primaryColor">Professional Blockchain Solutions:</strong> Join a growing network of investors and innovators with SBC.
+          <p className="text-secondaryText text-base lg:text-lg leading-relaxed">
+            <strong className="text-primaryColor">
+              Professional Blockchain Solutions:
+            </strong>{" "}
+            Join a growing network of investors and innovators with SBC.
           </p>
         </motion.div>
       </div>
