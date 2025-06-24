@@ -1,13 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTonConnectUI, useTonAddress } from "@tonconnect/ui-react";
 import { handleSendUsdt } from "../payments/sendUsdt";
 import { CustomConnectButton } from "./CustomConnectButton";
+import { getJettonWalletAddress } from "../utils/getJettonWalletAddress";
+import { USDT_MASTER_ADDRESS } from "../utils/transactionConfig";
 
 const Send: React.FC = () => {
   const [tonConnectUI] = useTonConnectUI();
   const userFriendlyAddress = useTonAddress();
   const rawAddress = useTonAddress(false);
   const [usdtAmount, setUsdtAmount] = useState<number>(0);
+  const [usdtBalance, setUsdtBalance] = useState<number>(0);
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
+
+  // Fetch USDT balance when wallet is connected
+  useEffect(() => {
+    const fetchUsdtBalance = async () => {
+      if (!userFriendlyAddress) {
+        setUsdtBalance(0);
+        return;
+      }
+
+      setIsLoadingBalance(true);
+      try {
+        const result = await getJettonWalletAddress(userFriendlyAddress, USDT_MASTER_ADDRESS);
+        if (result.balance) {
+          // Convert from smallest unit to USDT (6 decimals)
+          const balanceInUsdt = result.balance / 1_000_000;
+          setUsdtBalance(balanceInUsdt);
+        } else {
+          setUsdtBalance(0);
+        }
+      } catch (error) {
+        console.error('Error fetching USDT balance:', error);
+        setUsdtBalance(0);
+      } finally {
+        setIsLoadingBalance(false);
+      }
+    };
+
+    fetchUsdtBalance();
+  }, [userFriendlyAddress]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-bgDark1 via-bgDark2 to-bgDark3 text-primaryText font-Inter">
@@ -51,10 +84,19 @@ const Send: React.FC = () => {
                 <div className="text-secondaryText text-xs uppercase tracking-wider mb-1">Market Cap</div>
                 <div className="text-primaryText text-lg font-bold">$2.5M</div>
                 <div className="text-blue-400 text-xs">Stable</div>
-              </div>
-              <div className="bg-bgDark2/50 backdrop-blur-sm rounded-2xl p-4 border border-mainBorder">
+              </div>              <div className="bg-bgDark2/50 backdrop-blur-sm rounded-2xl p-4 border border-mainBorder">
                 <div className="text-secondaryText text-xs uppercase tracking-wider mb-1">Your Balance</div>
-                <div className="text-primaryText text-lg font-bold">{userFriendlyAddress ? "Connected" : "N/A"}</div>
+                <div className="text-primaryText text-lg font-bold">
+                  {userFriendlyAddress ? (
+                    isLoadingBalance ? (
+                      <span className="text-secondaryText">Loading...</span>
+                    ) : (
+                      `${usdtBalance.toFixed(2)} USDT`
+                    )
+                  ) : (
+                    "N/A"
+                  )}
+                </div>
                 <div className="text-secondaryText text-xs">TON Network</div>
               </div>
             </div>            {/* Trading Form */}
@@ -68,24 +110,44 @@ const Send: React.FC = () => {
               </div>
 
               {/* Trading Pair */}
-              <div className="bg-bgDark3/50 rounded-xl p-4 mb-6">
-                <div className="flex items-center justify-between mb-4">
+              <div className="bg-bgDark3/50 rounded-xl p-4 mb-6">                <div className="flex items-center justify-between mb-4">
                   <span className="text-secondaryText text-sm">You Pay</span>
-                  <span className="text-secondaryText text-sm">Balance: 0.00 USDT</span>
-                </div>
-                <div className="flex items-center gap-4">
+                  <span className="text-secondaryText text-sm">
+                    Balance: {isLoadingBalance ? (
+                      <span className="animate-pulse">Loading...</span>
+                    ) : (
+                      `${usdtBalance.toFixed(2)} USDT`
+                    )}
+                  </span>
+                </div>                <div className="flex items-center gap-4">
                   <input
                     type="number"
                     value={usdtAmount}
-                    onChange={(e) => setUsdtAmount(parseFloat(e.target.value))}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value) || 0;
+                      // Limit to available balance
+                      const maxValue = Math.min(value, usdtBalance);
+                      setUsdtAmount(maxValue >= 0 ? maxValue : 0);
+                    }}
                     placeholder="0.00"
                     min="0"
+                    max={usdtBalance}
+                    step="0.01"
                     className="flex-1 bg-transparent text-2xl font-bold text-primaryText placeholder-secondaryText focus:outline-none"
                   />
-                  <div className="flex items-center gap-2 bg-bgDark2 rounded-lg px-3 py-2">
+                  <div className="flex items-center gap-2 bg-green-500/20 rounded-lg px-3 py-2">
                     <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-xs font-bold text-white">$</div>
                     <span className="font-medium">USDT</span>
                   </div>
+                </div>
+                <div className="flex justify-end mt-2">
+                  <button 
+                    onClick={() => setUsdtAmount(usdtBalance)}
+                    disabled={!userFriendlyAddress || usdtBalance === 0}
+                    className="text-primaryColor text-sm hover:text-secondaryColor transition-colors disabled:text-secondaryText disabled:cursor-not-allowed"
+                  >
+                    Max
+                  </button>
                 </div>
               </div>
 
@@ -129,26 +191,31 @@ const Send: React.FC = () => {
                   <span className="text-secondaryText">Slippage</span>
                   <span className="text-primaryText">0.1%</span>
                 </div>
-              </div>
-
-              {/* Buy Button */}
+              </div>              {/* Buy Button */}
               <button
                 onClick={() => handleSendUsdt(tonConnectUI, userFriendlyAddress, usdtAmount)}
-                disabled={!userFriendlyAddress || usdtAmount <= 0}
+                disabled={!userFriendlyAddress || usdtAmount <= 0 || usdtAmount > usdtBalance || isLoadingBalance}
                 className={`w-full py-4 rounded-xl text-lg font-bold transition-all duration-300 ${
-                  userFriendlyAddress && usdtAmount > 0
+                  userFriendlyAddress && usdtAmount > 0 && usdtAmount <= usdtBalance && !isLoadingBalance
                     ? "bg-gradient-to-r from-primaryColor to-secondaryColor hover:from-secondaryColor hover:to-primaryColor text-white shadow-lg hover:shadow-primaryColor/25 transform hover:scale-[1.02]"
                     : "bg-bgDark3 text-secondaryText cursor-not-allowed"
                 }`}
               >
-                {!userFriendlyAddress ? "Connect Wallet" : usdtAmount <= 0 ? "Enter Amount" : "Buy SBC Tokens"}
+                {!userFriendlyAddress 
+                  ? "Connect Wallet" 
+                  : isLoadingBalance 
+                    ? "Loading Balance..." 
+                    : usdtAmount <= 0 
+                      ? "Enter Amount" 
+                      : usdtAmount > usdtBalance 
+                        ? "Insufficient Balance" 
+                        : "Buy SBC Tokens"}
               </button>
             </div>
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Wallet Status */}
+          <div className="space-y-6">            {/* Wallet Status */}
             {userFriendlyAddress ? (
               <div className="bg-gradient-to-r from-green-600/20 to-green-500/20 backdrop-blur-sm rounded-2xl border border-green-500/30 p-6">
                 <div className="flex items-center gap-3 mb-4">
@@ -162,9 +229,19 @@ const Send: React.FC = () => {
                     <p className="text-secondaryText text-sm">Ready to trade</p>
                   </div>
                 </div>
-                <div className="bg-bgDark3/50 rounded-lg p-3">
+                <div className="bg-bgDark3/50 rounded-lg p-3 mb-3">
                   <p className="text-xs text-secondaryText mb-1">Address:</p>
                   <p className="text-sm text-primaryText font-mono truncate">{userFriendlyAddress}</p>
+                </div>
+                <div className="bg-bgDark3/50 rounded-lg p-3">
+                  <p className="text-xs text-secondaryText mb-1">USDT Balance:</p>
+                  <p className="text-sm text-primaryText font-bold">
+                    {isLoadingBalance ? (
+                      <span className="animate-pulse">Loading...</span>
+                    ) : (
+                      `${usdtBalance.toFixed(6)} USDT`
+                    )}
+                  </p>
                 </div>
               </div>
             ) : (
@@ -177,7 +254,7 @@ const Send: React.FC = () => {
                 <h3 className="text-lg font-bold text-orange-400 mb-2">Wallet Required</h3>
                 <p className="text-secondaryText text-sm">Connect your wallet to start trading</p>
               </div>
-            )}            {/* Quick Actions */}
+            )}{/* Quick Actions */}
             <div className="bg-bgDark2/50 backdrop-blur-sm rounded-2xl border border-mainBorder p-6">
               <h3 className="text-lg font-bold text-primaryText mb-4">Quick Actions</h3>
               <div className="space-y-3">
