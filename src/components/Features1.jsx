@@ -1,16 +1,35 @@
 import { motion } from "framer-motion";
-
-import feature1 from "../assets/images/feature1.jpg";
-import feature2 from "../assets/images/feature2.jpg";
-import feature3 from "../assets/images/feature3.jpg";
-import feature4 from "../assets/images/feature4.jpg";
 import { CheckArrowIcon } from "../assets/icons/CheckArrowIcon";
 
 export const Features1 = () => {
+  const features = [
+    {
+      icon: "⚡",
+      title: "Lightning Fast",
+      description: "Process transactions in seconds with our optimized blockchain network"
+    },
+    {
+      icon: "🔒",
+      title: "Bank-Grade Security",
+      description: "Advanced encryption and security protocols protect your assets"
+    },
+    {
+      icon: "💰",
+      title: "Low Fees",
+      description: "Minimal transaction costs for maximum value transfer"
+    },
+    {
+      icon: "🌐",
+      title: "Global Access",
+      description: "24/7 worldwide accessibility from any device, anywhere"
+    }
+  ];
+
   return (
     <section
-      className="w-full bg-bgDark2 pt-4 -mt-8 mb-8 sm:-mt-8 sm:mb-24 xl:-mt-8 2xl:mt-0 md:pt-[4vw] lg:pt-4"
+      className="w-full pt-20 pb-16"
       id="features"
+      style={{ background: "#17212b" }}
     >
       <motion.div
         initial={{ opacity: 0 }}
@@ -18,88 +37,100 @@ export const Features1 = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <div className="flex flex-wrap items-center 2xl:w-[1450px] xl:w-[1300px] w-11/12 mx-auto md:pl-4 xl:pr-16 xl:pl-16">
-          {/* Left Content */}
-          <div className="w-full lg:w-1/2 mb-12 lg:mb-0">
-            <div className="mx-auto lg:mx-auto w-11/12 sm:w-4/5 md:w-3/4 lg:w-unset">
-              <span className="block-subtitle">Empower Your Transactions</span>
-              <h2 className="mt-6 mb-8 text-4xl lg:text-5xl block-big-title">
-                Why Choose SBC?
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="text-[#2aabee] text-lg font-semibold tracking-wide uppercase">
+                Why Choose SBC
+              </span>
+              <h2 className="mt-4 text-4xl lg:text-5xl font-bold text-white">
+                Revolutionary Blockchain Features
               </h2>
-              <p className="mb-10 text-secondaryText leading-loose">
-                SBC redefines digital transactions with its secure,
-                efficient, and transparent blockchain technology. Empower your
-                financial processes with unparalleled features designed for the
-                modern economy.
+              <p className="mt-6 text-xl text-[#aab2bb] max-w-3xl mx-auto leading-relaxed">
+                Experience the next generation of digital finance with secure, efficient, 
+                and transparent blockchain technology designed for the modern economy.
               </p>
-              <ul className="mb-6 text-primaryText">
-                <li className="mb-4 flex">
-                  <CheckArrowIcon />
-                  <span>Secure blockchain transactions</span>
-                </li>
-                <li className="mb-4 flex">
-                  <CheckArrowIcon />
-                  <span>Low transaction fees for global accessibility</span>
-                </li>
-                <li className="mb-4 flex">
-                  <CheckArrowIcon />
-                  <span>Seamless integration with wallets and platforms</span>
-                </li>
-              </ul>
-            </div>
+            </motion.div>
           </div>
 
-          {/* Right Content (Images) */}
-          <div className="w-3/4 mx-auto lg:w-1/2 flex flex-wrap lg:-mx-4 sm:pr-8 lg:pt-10 justify-center lg:pl-4 xl:px-8">
-            <div className="mb-8 lg:mb-0 w-full sm:w-1/2 px-2 lg:px-0">
-              <div className="mb-4 py-3 pl-3 pr-2 rounded">
-                <img
-                  src={feature1.src}
-                  alt="Fast Transactions"
-                  className="rounded-xl main-border-gray mx-auto sm:mx-unset"
-                  aria-label="Fast Transactions"
-                />
-                <p className="text-white text-center mt-4 text-sm">
-                  Fast Transactions
-                </p>
-              </div>
-              <div className="py-3 pl-3 pr-2 rounded">
-                <img
-                  src={feature2.src}
-                  alt="Scalable Solutions"
-                  className="rounded-xl main-border-gray mx-auto sm:mx-unset"
-                  aria-label="Scalable Solutions"
-                />
-                <p className="text-white text-center mt-4 text-sm">
-                  Scalable Solutions
-                </p>
-              </div>
-            </div>
-            <div className="w-1/2 lg:mt-20 pt-12 lg:pt-0 px-2 hidden sm:inline-block">
-              <div className="mb-4 py-3 pl-3 pr-2 rounded-lg">
-                <img
-                  src={feature3.src}
-                  alt="Enhanced Security"
-                  className="rounded-xl main-border-gray"
-                  aria-label="Enhanced Security"
-                />
-                <p className="text-white text-center mt-4 text-sm">
-                  Enhanced Security
-                </p>
-              </div>
-              <div className="py-3 pl-3 pr-2 rounded-lg">
-                <img
-                  src={feature4.src}
-                  alt="User-Centric Design"
-                  className="rounded-xl main-border-gray"
-                  aria-label="User-Centric Design"
-                />
-                <p className="text-white text-center mt-4 text-sm">
-                  User-Centric Design
-                </p>
-              </div>
-            </div>
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                className="bg-[#232e3c] border border-[#2d3a4b] rounded-2xl p-8 text-center hover:bg-[#2a3441] transition-all duration-300"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -5, scale: 1.02 }}
+              >
+                <div className="text-5xl mb-6">{feature.icon}</div>
+                <h3 className="text-xl font-bold text-white mb-4">{feature.title}</h3>
+                <p className="text-[#aab2bb] leading-relaxed">{feature.description}</p>
+              </motion.div>
+            ))}
           </div>
+
+          {/* Benefits List */}
+          <motion.div
+            className="mt-20 bg-[#232e3c] border border-[#2d3a4b] rounded-2xl p-8 lg:p-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <h3 className="text-3xl font-bold text-white mb-6">
+                  Built for the Future of Finance
+                </h3>
+                <p className="text-[#aab2bb] text-lg leading-relaxed mb-8">
+                  SBC combines cutting-edge technology with user-friendly design to deliver 
+                  an unparalleled blockchain experience for individuals and businesses.
+                </p>
+                <div className="space-y-4">
+                  {[
+                    "Advanced smart contract functionality",
+                    "Cross-chain compatibility and interoperability", 
+                    "Eco-friendly proof-of-stake consensus",
+                    "Developer-friendly API and tools"
+                  ].map((benefit, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="flex-shrink-0 mt-1">
+                        <CheckArrowIcon />
+                      </div>
+                      <span className="text-white">{benefit}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="lg:pl-8">
+                <div className="bg-[#17212b] border border-[#2d3a4b] rounded-xl p-8 text-center">
+                  <div className="text-6xl mb-4">🚀</div>
+                  <h4 className="text-2xl font-bold text-white mb-4">Ready to Start?</h4>
+                  <p className="text-[#aab2bb] mb-6">
+                    Join thousands of users already using SBC for their financial needs.
+                  </p>
+                  <a
+                    href="/buy"
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-[#2aabee] hover:bg-[#1e96d3] text-white font-semibold rounded-xl transition-all duration-300"
+                  >
+                    Get Started
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </motion.div>
     </section>
