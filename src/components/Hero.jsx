@@ -1,57 +1,6 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { gsap } from "gsap";
 
 export const Hero = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  // Target date for the countdown
-  const targetDate = new Date("2025-03-01T00:00:00");
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const diff = targetDate - now;
-
-      if (diff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / 1000 / 60) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      setTimeLeft({ days, hours, minutes, seconds });
-
-      // Save the remaining time in localStorage
-      localStorage.setItem("rialTimer", JSON.stringify({ days, hours, minutes, seconds }));
-    };
-
-    // Retrieve timer state from localStorage to persist between refreshes
-    const savedTimer = localStorage.getItem("rialTimer");
-    if (savedTimer) {
-      setTimeLeft(JSON.parse(savedTimer));
-    }
-
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // GSAP Animations
-  useEffect(() => {
-    gsap.fromTo(
-      ".timer-box",
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1, stagger: 0.2 }
-    );
-  }, []);
 
   return (
     <section
@@ -68,25 +17,20 @@ export const Hero = () => {
           <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white leading-tight mt-10">
           Decentralize Everything <br className="hidden sm:block" /> with{" "}
             <span className="text-primaryColor">SBC</span>
-          </h1>
-        </motion.div>
+          </h1>        </motion.div>
 
-        {/* Countdown Timer */}
+        {/* Investment Description */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="flex flex-wrap justify-center items-center mt-12 gap-4">
-            {Object.entries(timeLeft).map(([unit, value]) => (
-              <div
-                key={unit}
-                className="timer-box bg-primaryColor text-white rounded-lg p-4 w-24 sm:w-28 lg:w-32 shadow-md flex flex-col items-center"
-              >
-                <p className="text-3xl sm:text-4xl font-extrabold">{value}</p>
-                <p className="text-sm sm:text-base mt-1 uppercase tracking-wide">{unit}</p>
-              </div>
-            ))}
+        >          <div className="max-w-4xl mx-auto mt-12">
+            <p className="text-xl sm:text-2xl text-secondaryText leading-relaxed">
+              Invest in Senior Blockchain Company and participate in blockchain project profits
+            </p>
+            <p className="text-lg sm:text-xl text-secondaryText mt-4 leading-relaxed">
+              By purchasing SBC tokens, invest in the future of blockchain technology and benefit from our innovative project profits
+            </p>
           </div>
         </motion.div>
 
@@ -104,11 +48,9 @@ export const Hero = () => {
               aria-label="Buy SBC"
             >
               Buy SBC
-            </a>
-
-            {/* Limited Time Offer Text */}
-            <p className="text-secondaryText text-lg mt-6 text-center">
-              <strong className="text-primaryColor">Limited Time Offer:</strong> Buy SBC for only 0.01 USDT until 2025-03-01!
+            </a>            {/* Investment Call-to-Action Text */}
+            <p className="text-secondaryText text-lg mt-6 text-center max-w-2xl mx-auto">
+              <strong className="text-primaryColor">Investment Opportunity:</strong> Invest in our company by purchasing SBC tokens and benefit from future project profits
             </p>
           </div>
         </motion.div>

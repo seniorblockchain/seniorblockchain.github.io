@@ -1,79 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { gsap } from "gsap";
+import React, { useState } from "react";
 import { TonConnectButton, useTonConnectUI, useTonAddress } from "@tonconnect/ui-react";
 import { handleSendUsdt } from "../payments/sendUsdt";
-import { CustomConnectButton } from "./CustomConnectButton"; 
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
+import { CustomConnectButton } from "./CustomConnectButton";
 
 const Send: React.FC = () => {
   const [tonConnectUI] = useTonConnectUI();
   const userFriendlyAddress = useTonAddress();
   const rawAddress = useTonAddress(false);
   const [usdtAmount, setUsdtAmount] = useState<number>(0);
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  const targetDate = new Date("2025-03-01T00:00:00");
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const diff = targetDate.getTime() - now.getTime();
-
-      if (diff <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / 1000 / 60) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      setTimeLeft({ days, hours, minutes, seconds });
-
-      localStorage.setItem("rialTimer", JSON.stringify({ days, hours, minutes, seconds }));
-    };
-
-    const savedTimer = localStorage.getItem("rialTimer");
-    if (savedTimer) {
-      setTimeLeft(JSON.parse(savedTimer));
-    }
-
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    gsap.fromTo(
-      ".timer-box",
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1, stagger: 0.2 }
-    );
-  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center text-primaryText font-Inter p-8 min-h-screen bg-gradient-to-br from-bgDark1 to-bgDark2">
-      {/* Countdown Timer */}
-      <div className="flex flex-wrap justify-center items-center mb-8 mt-8">
-        {Object.entries(timeLeft).map(([unit, value]) => (
-          <div
-            key={unit}
-            className="timer-box bg-primaryColor text-white rounded-lg p-4 w-24 sm:w-28 lg:w-32 shadow-md flex flex-col items-center mx-2 mt-4"
-          >
-            <p className="text-3xl sm:text-4xl font-extrabold">{value}</p>
-            <p className="text-sm sm:text-base mt-1 uppercase tracking-wide">{unit}</p>
-          </div>
-        ))}
+      {/* Investment Description */}
+      <div className="max-w-4xl mx-auto text-center mb-8">
+        <h2 className="text-3xl sm:text-4xl font-bold text-primaryColor mb-4">
+          Invest in SBC Company
+        </h2>
+        <p className="text-lg sm:text-xl text-secondaryText leading-relaxed">
+          Invest in Senior Blockchain Company by purchasing SBC tokens and benefit from innovative project profits
+        </p>
       </div>
 
       {/* Wallet Connect Button */}
