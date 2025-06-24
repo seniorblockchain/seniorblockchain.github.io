@@ -50,13 +50,12 @@ export const Navbar = () => {
               key={label}
               href={href}
               aria-label={ariaLabel}
-              className="text-secondaryText hover:text-primaryColor font-medium text-sm uppercase tracking-wider transition-all duration-300 relative group"
+              className="text-secondaryText hover:text-primaryColor font-medium text-base px-2 py-1 rounded-md transition-colors duration-200 focus:outline-none focus:ring-0 border-none bg-transparent shadow-none"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 + index * 0.1 }}
             >
               {label}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primaryColor to-secondaryColor group-hover:w-full transition-all duration-300"></span>
             </motion.a>
           ))}        </motion.div>        {/* Desktop Action Buttons */}
         <motion.div
@@ -106,7 +105,7 @@ export const Navbar = () => {
                 href={href}
                 aria-label={ariaLabel}
                 onClick={() => setIsOpen(false)}
-                className="px-5 py-2 text-secondaryText hover:text-primaryColor text-base font-medium transition-all duration-200 rounded-lg hover:bg-bgDark3 text-left"
+                className="px-5 py-2 text-secondaryText hover:text-primaryColor text-base font-medium transition-all duration-200 rounded-md bg-transparent border-none shadow-none focus:outline-none focus:ring-0 text-left"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: index * 0.05 }}

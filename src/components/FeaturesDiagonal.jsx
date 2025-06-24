@@ -35,13 +35,7 @@ export const FeaturesDiagonal = () => {
               >
                 Buy Now
               </a>
-              <a
-                href="/sell"
-                className="w-[210px] h-12 contained-button bg-white text-primaryColor border border-primaryColor rounded-lg flex justify-center items-center hover:bg-bgDark3 hover:text-white transition"
-                aria-label="Sell SBC"
-              >
-                Sell Now
-              </a>
+
             </div>
           </div>
 
