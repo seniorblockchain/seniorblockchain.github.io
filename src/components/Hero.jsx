@@ -23,7 +23,8 @@ export const Hero = () => {
             <span className="block mb-2">Decentralize Everything</span>
             <span className="block">with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primaryColor to-secondaryColor">SBC</span></span>
           </h1>
-        </motion.div>        {/* Investment Description */}
+        </motion.div>
+        {/* Investment Description */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -31,35 +32,15 @@ export const Hero = () => {
           className="mb-12"
         >
           <div className="max-w-4xl mx-auto">
-            <p className="text-xl sm:text-2xl lg:text-3xl text-secondaryText leading-relaxed mb-6 font-medium">
-              Invest in Senior Blockchain Company and participate in blockchain project profits
+            <p className="text-base sm:text-lg lg:text-xl text-secondaryText leading-relaxed mb-4 font-medium">
+              Invest in SBC and access the future of decentralized finance.
             </p>
-            <p className="text-base sm:text-lg lg:text-xl text-secondaryText leading-relaxed opacity-90">
-              By purchasing SBC tokens, invest in the future of blockchain technology and benefit from our innovative project profits
+            <p className="text-sm sm:text-base lg:text-lg text-secondaryText leading-relaxed opacity-90">
+              Buy SBC tokens to join a trusted blockchain ecosystem and benefit from real project growth.
             </p>
           </div>
         </motion.div>
-
-        {/* Stats Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12 w-full max-w-4xl"
-        >
-          <div className="text-center p-6 bg-bgDark2/50 backdrop-blur-sm rounded-2xl border border-mainBorder">
-            <div className="text-3xl lg:text-4xl font-bold text-primaryColor mb-2">$1M+</div>
-            <div className="text-secondaryText text-sm lg:text-base">Total Value Locked</div>
-          </div>
-          <div className="text-center p-6 bg-bgDark2/50 backdrop-blur-sm rounded-2xl border border-mainBorder">
-            <div className="text-3xl lg:text-4xl font-bold text-primaryColor mb-2">50K+</div>
-            <div className="text-secondaryText text-sm lg:text-base">Active Investors</div>
-          </div>
-          <div className="text-center p-6 bg-bgDark2/50 backdrop-blur-sm rounded-2xl border border-mainBorder">
-            <div className="text-3xl lg:text-4xl font-bold text-primaryColor mb-2">99.9%</div>
-            <div className="text-secondaryText text-sm lg:text-base">Uptime</div>
-          </div>
-        </motion.div>        {/* Call-to-Action Buttons */}
+        {/* Call-to-Action Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -80,7 +61,6 @@ export const Hero = () => {
             </span>
           </a>
         </motion.div>
-
         {/* Investment Call-to-Action Text */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -88,8 +68,8 @@ export const Hero = () => {
           transition={{ duration: 0.8, delay: 0.9 }}
           className="text-center max-w-3xl mx-auto"
         >
-          <p className="text-secondaryText text-base lg:text-lg leading-relaxed">
-            <strong className="text-primaryColor">Investment Opportunity:</strong> Join thousands of investors who trust SBC for secure, profitable blockchain investments with transparent returns and cutting-edge technology.
+          <p className="text-secondaryText text-sm lg:text-base leading-relaxed">
+            <strong className="text-primaryColor">Professional Blockchain Solutions:</strong> Join a growing network of investors and innovators with SBC.
           </p>
         </motion.div>
       </div>
