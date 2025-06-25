@@ -37,7 +37,7 @@ export const Footer = () => {
                 <SBCLogo />
               </div>
               <div className="text-white font-['Inter'] font-bold text-xl">
-                SBC
+                Senior Blockchain Company
               </div>
             </div>
             <p className="mb-8 text-gray-400 leading-loose">
