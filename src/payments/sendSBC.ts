@@ -1,8 +1,6 @@
 import { toNano, beginCell, Address } from 'ton';
 import {
-  RECEIVER_ADDRESS,
   getTxValidUntil,
-  SBC_AMOUNT,
   TON_FEE,
   SBC_MASTER_ADDRESS,
 } from '../utils/transactionConfig';
@@ -45,26 +43,36 @@ const displayMessage = (message: string, type: 'success' | 'error') => {
 export const handleSendSBC = async (
   tonConnectUI: any,
   userFriendlyAddress: string | null,
-  rialAmount: number // Accepting custom amount
+  sbcAmount: number,
+  receiverAddress: string,
 ) => {
   if (!userFriendlyAddress) {
     console.error('User address is not available');
     displayMessage('User address is not available', 'error');
     return;
   }
+
+  let parsedReceiverAddress;
+  try {
+    parsedReceiverAddress = Address.parse(receiverAddress);
+  } catch (error) {
+    console.error('Receiver address is invalid', error);
+    displayMessage('Receiver address is invalid', 'error');
+    return;
+  }
   
-  const rialAmountInNano = rialAmount * 100_000_000; // Convert SBC to smallest unit
+  const sbcAmountInNano = sbcAmount * 100_000_000; // Convert SBC to smallest unit
 
   const forwardPayload = beginCell()
     .storeUint(0, 32) // 0 opcode means we have a comment
     .storeStringTail('SBC Pass payment!')
     .endCell();
 
-  const rialMessageBody = beginCell()
+  const sbcMessageBody = beginCell()
     .storeUint(0xf8a7ea5, 32) // opcode for jetton transfer
     .storeUint(0, 64) // query id
-    .storeCoins(rialAmountInNano)
-    .storeAddress(RECEIVER_ADDRESS)
+    .storeCoins(sbcAmountInNano)
+    .storeAddress(parsedReceiverAddress)
     .storeAddress(Address.parse(userFriendlyAddress)) // response destination
     .storeBit(0) // no custom payload
     .storeCoins(toNano('0.01')) // forward amount - if >0, will send notification message
@@ -83,7 +91,7 @@ export const handleSendSBC = async (
     jettonBalance = result.balance;
   }
 
-  if (!jettonBalance || jettonBalance < rialAmountInNano) {
+  if (!jettonBalance || jettonBalance < sbcAmountInNano) {
     displayMessage('Insufficient funds', 'error');
     return;
   }
@@ -99,7 +107,7 @@ export const handleSendSBC = async (
       {
         address: jettonWalletAddress.toString(),
         amount: TON_FEE.toString(),
-        payload: rialMessageBody.toBoc().toString('base64'),
+        payload: sbcMessageBody.toBoc().toString('base64'),
       },
     ],
   };

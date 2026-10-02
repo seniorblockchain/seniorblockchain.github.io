@@ -1,0 +1,16 @@
+{
+  "projectName": "SBC Exchange",
+  "treasuryWallet": "UQCUS0q4DJLKBL_dxO492OFd3H-ajpB0_wUfamWNHne1_ehf",
+  "pool": {
+    "sbc": 3198544,
+    "usdt": 11200
+  },
+  "chart": {
+    "samples": 18,
+    "volatility": 0.045
+  },
+  "content": {
+    "headline": "SBC Spot Desk",
+    "subheadline": "Single-panel SBC trading."
+  }
+}

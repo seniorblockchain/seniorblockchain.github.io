@@ -6,7 +6,7 @@ import { TonConnectUIProvider, TonConnectButton } from "@tonconnect/ui-react";
 import Send from "./Send";
 
 export const Buy = () => {
-  const manifestUrl = "https://seniorblockchain.io/tonconnect-manifest.json";
+  const manifestUrl = "https://seniorblockchain.github.io/tonconnect-manifest.json";
 
   return (
 

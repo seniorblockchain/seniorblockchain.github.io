@@ -7,7 +7,7 @@ import Send from "./Send";
 import Receive from "./Receive";
 
 export const Sell = () => {
-  const manifestUrl = "https://seniorblockchain.io/tonconnect-manifest.json";
+  const manifestUrl = "https://seniorblockchain.github.io/tonconnect-manifest.json";
 
   return (
 

@@ -1,6 +1,5 @@
 import { toNano, beginCell, Address } from 'ton';
 import {
-  RECEIVER_ADDRESS,
   getTxValidUntil,
   TON_FEE,
   USDT_MASTER_ADDRESS,
@@ -44,11 +43,21 @@ const displayMessage = (message: string, type: 'success' | 'error') => {
 export const handleSendUsdt = async (
   tonConnectUI: any,
   userFriendlyAddress: string | null,
-  usdtAmount: number // Accepting custom amount
+  usdtAmount: number,
+  receiverAddress: string,
 ) => {
   if (!userFriendlyAddress) {
     console.error('User address is not available');
     displayMessage('User address is not available', 'error');
+    return;
+  }
+
+  let parsedReceiverAddress;
+  try {
+    parsedReceiverAddress = Address.parse(receiverAddress);
+  } catch (error) {
+    console.error('Receiver address is invalid', error);
+    displayMessage('Receiver address is invalid', 'error');
     return;
   }
 
@@ -63,7 +72,7 @@ export const handleSendUsdt = async (
     .storeUint(0xf8a7ea5, 32) // opcode for jetton transfer
     .storeUint(0, 64) // query id
     .storeCoins(usdtAmountInNano)
-    .storeAddress(RECEIVER_ADDRESS)
+    .storeAddress(parsedReceiverAddress)
     .storeAddress(Address.parse(userFriendlyAddress)) // response destination
     .storeBit(0) // no custom payload
     .storeCoins(toNano('0.01')) // forward amount - if >0, will send notification message
