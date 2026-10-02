@@ -215,8 +215,8 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
   const ctaAction = userFriendlyAddress ? handleTrade : connectWallet;
   const accent =
     mode === 'buy'
-      ? 'bg-cyan-300 hover:bg-cyan-200'
-      : 'bg-emerald-300 hover:bg-emerald-200';
+      ? 'bg-emerald-500 text-white hover:bg-emerald-400 active:bg-emerald-600'
+      : 'bg-rose-500 text-white hover:bg-rose-400 active:bg-rose-600';
 
   const stats = [
     { label: 'SBC price', value: formatPrice(spotPrice, 6) },
@@ -367,14 +367,14 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
                   key={tab}
                   onClick={() => switchMode(tab)}
                   className={`relative z-10 h-11 rounded-xl text-[15px] font-semibold capitalize transition-colors ${
-                    mode === tab ? 'text-slate-950' : 'text-slate-400 hover:text-white'
+                    mode === tab ? 'text-white' : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   {mode === tab && (
                     <motion.span
                       layoutId="mode-pill"
                       transition={{ type: 'spring', stiffness: 500, damping: 38 }}
-                      className={`absolute inset-0 -z-10 rounded-xl ${tab === 'buy' ? 'bg-cyan-300' : 'bg-emerald-300'}`}
+                      className={`absolute inset-0 -z-10 rounded-xl ${tab === 'buy' ? 'bg-emerald-500' : 'bg-rose-500'}`}
                     />
                   )}
                   {tab} SBC
@@ -523,7 +523,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             <button
               onClick={() => void ctaAction()}
               disabled={ctaDisabled}
-              className={`mt-2 flex h-14 w-full items-center justify-center gap-2 rounded-2xl text-base font-semibold text-slate-950 transition-colors disabled:cursor-not-allowed disabled:bg-white/[0.06] disabled:text-slate-500 ${accent}`}
+              className={`mt-2 flex h-14 w-full items-center justify-center gap-2 rounded-2xl text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:bg-white/[0.06] disabled:text-slate-500 ${accent}`}
             >
               {isSubmitting && <Spinner />}
               {ctaLabel}
