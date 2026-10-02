@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react';
 import exchangeConfig from '../data/exchange-config.json';
@@ -14,17 +14,13 @@ import {
   getSpotPrice,
   type PoolState,
 } from '../utils/exchangeMath';
-import { getJettonWalletAddress } from '../utils/getJettonWalletAddress';
-import { SBC_MASTER_ADDRESS, USDT_MASTER_ADDRESS } from '../utils/transactionConfig';
+import { fetchWalletBalances, type WalletBalances } from '../utils/fetchWalletBalances';
 
 type ExchangeConfig = typeof exchangeConfig;
 type TradeMode = 'buy' | 'sell';
-type Token = 'SBC' | 'USDT';
+type Token = 'SBC' | 'USDT' | 'TON';
 
-type BalanceState = {
-  usdt: number;
-  sbc: number;
-};
+const EMPTY_BALANCES: WalletBalances = { usdt: 0, sbc: 0, ton: 0, tonPriceUsd: 0 };
 
 const formatAddress = (address: string) => `${address.slice(0, 4)}…${address.slice(-4)}`;
 
@@ -44,9 +40,19 @@ const USDTIcon = () => (
   </svg>
 );
 
+const TONIcon = () => (
+  <svg viewBox="0 0 56 56" className="h-full w-full" aria-hidden="true">
+    <circle cx="28" cy="28" r="28" fill="#0098EA" />
+    <path
+      fill="#fff"
+      d="M37.56 15.63H18.44c-3.52 0-5.75 3.8-3.98 6.86l11.8 20.45c.77 1.34 2.7 1.34 3.47 0l11.8-20.45c1.77-3.06-.46-6.86-3.97-6.86zM26.25 36.8l-2.57-4.97-6.2-11.09c-.41-.71.1-1.62.96-1.62h7.81v17.68zm12.27-16.06-6.2 11.1-2.57 4.96V19.12h7.81c.86 0 1.37.91.96 1.62z"
+    />
+  </svg>
+);
+
 const TokenIcon: React.FC<{ token: Token; size?: string }> = ({ token, size = 'h-7 w-7' }) => (
   <span className={`inline-flex shrink-0 overflow-hidden rounded-full ${size} [&>svg]:h-full [&>svg]:w-full`}>
-    {token === 'SBC' ? <SBCLogo /> : <USDTIcon />}
+    {token === 'SBC' ? <SBCLogo /> : token === 'USDT' ? <USDTIcon /> : <TONIcon />}
   </span>
 );
 
@@ -77,12 +83,111 @@ const impactTone = (impact: number) => {
   return 'text-rose-400';
 };
 
+type WalletPanelProps = {
+  address: string;
+  balances: WalletBalances;
+  sbcPriceUsd: number;
+  isLoading: boolean;
+  updatedAt: Date | null;
+  onRefresh: () => void;
+};
+
+const WalletPanel: React.FC<WalletPanelProps> = ({ address, balances, sbcPriceUsd, isLoading, updatedAt, onRefresh }) => {
+  const rows: { token: Token; name: string; amount: number; digits: number; usd: number | null }[] = [
+    { token: 'USDT', name: 'Tether USD', amount: balances.usdt, digits: 2, usd: balances.usdt },
+    { token: 'SBC', name: 'Senior Blockchain', amount: balances.sbc, digits: 2, usd: balances.sbc * sbcPriceUsd },
+    {
+      token: 'TON',
+      name: 'Toncoin',
+      amount: balances.ton,
+      digits: 4,
+      usd: balances.tonPriceUsd ? balances.ton * balances.tonPriceUsd : null,
+    },
+  ];
+  const total = rows.reduce((sum, row) => sum + (row.usd ?? 0), 0);
+  const showSkeleton = isLoading && !updatedAt;
+
+  return (
+    <div className="rounded-3xl border border-white/10 bg-[#081925] p-4 sm:p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[13px] font-medium text-slate-400">Your wallet</p>
+          {showSkeleton ? (
+            <Skeleton className="mt-2 h-8 w-36" />
+          ) : (
+            <p className="mt-1 text-[28px] font-bold leading-tight tracking-tight tabular-nums text-white sm:text-[32px]">
+              {formatPrice(total, 2)}
+            </p>
+          )}
+        </div>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <button
+            onClick={onRefresh}
+            disabled={isLoading}
+            aria-label="Refresh balances"
+            className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.06] text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-60"
+          >
+            <svg className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h5M20 20v-5h-5M5.1 15A7 7 0 0 0 18 17.7M18.9 9A7 7 0 0 0 6 6.3" />
+            </svg>
+          </button>
+          <a
+            href={`https://tonviewer.com/${address}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View on Tonviewer"
+            className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.06] text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <ul className="mt-4 divide-y divide-white/[0.06] overflow-hidden rounded-2xl border border-white/[0.06] bg-[#06141f]">
+        {rows.map((row) => (
+          <li key={row.token} className="flex items-center gap-3 px-3.5 py-3 sm:px-4">
+            <TokenIcon token={row.token} size="h-9 w-9" />
+            <div className="min-w-0 flex-1">
+              <p className="text-[15px] font-semibold text-white">{row.token}</p>
+              <p className="truncate text-xs text-slate-500">{row.name}</p>
+            </div>
+            <div className="text-right">
+              {showSkeleton ? (
+                <div className="flex flex-col items-end gap-1.5">
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-3 w-12" />
+                </div>
+              ) : (
+                <>
+                  <p className="text-[15px] font-semibold tabular-nums text-white">
+                    {formatCompactNumber(row.amount, row.digits)}
+                  </p>
+                  <p className="text-xs tabular-nums text-slate-500">{row.usd === null ? '—' : formatPrice(row.usd, 2)}</p>
+                </>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {updatedAt && (
+        <p className="mt-3 text-center text-[11px] text-slate-500">
+          Updated {updatedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · SBC valued at pool price
+        </p>
+      )}
+    </div>
+  );
+};
+
 export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) => {
   const [tonConnectUI] = useTonConnectUI();
   const userFriendlyAddress = useTonAddress();
   const [mode, setMode] = useState<TradeMode>('buy');
   const [tradeAmount, setTradeAmount] = useState<string>('250');
-  const [balances, setBalances] = useState<BalanceState>({ usdt: 0, sbc: 0 });
+  const [balances, setBalances] = useState<WalletBalances>(EMPTY_BALANCES);
+  const [balancesUpdatedAt, setBalancesUpdatedAt] = useState<Date | null>(null);
   const [isLoadingBalances, setIsLoadingBalances] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
@@ -104,34 +209,27 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
   const payUsdValue = mode === 'buy' ? numericAmount : numericAmount * spotPrice;
   const receiveText = formatCompactNumber(activeQuote.amountOut, receiveToken === 'USDT' ? 2 : 4);
 
-  useEffect(() => {
-    const fetchBalances = async () => {
-      if (!userFriendlyAddress) {
-        setBalances({ usdt: 0, sbc: 0 });
-        return;
-      }
+  const refreshBalances = useCallback(async () => {
+    if (!userFriendlyAddress) {
+      setBalances(EMPTY_BALANCES);
+      setBalancesUpdatedAt(null);
+      return;
+    }
 
-      setIsLoadingBalances(true);
-      try {
-        const [usdtResult, sbcResult] = await Promise.all([
-          getJettonWalletAddress(userFriendlyAddress, USDT_MASTER_ADDRESS),
-          getJettonWalletAddress(userFriendlyAddress, SBC_MASTER_ADDRESS),
-        ]);
-
-        setBalances({
-          usdt: usdtResult.balance ? usdtResult.balance / 1_000_000 : 0,
-          sbc: sbcResult.balance ? sbcResult.balance / 100_000_000 : 0,
-        });
-      } catch (error) {
-        console.error('Error fetching balances:', error);
-        setBalances({ usdt: 0, sbc: 0 });
-      } finally {
-        setIsLoadingBalances(false);
-      }
-    };
-
-    fetchBalances();
+    setIsLoadingBalances(true);
+    try {
+      setBalances(await fetchWalletBalances(userFriendlyAddress));
+      setBalancesUpdatedAt(new Date());
+    } catch (error) {
+      console.error('Error fetching balances:', error);
+    } finally {
+      setIsLoadingBalances(false);
+    }
   }, [userFriendlyAddress]);
+
+  useEffect(() => {
+    void refreshBalances();
+  }, [refreshBalances]);
 
   useEffect(() => {
     if (!walletMenuOpen) return;
@@ -180,6 +278,9 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
       } else {
         await handleSendSBC(tonConnectUI, userFriendlyAddress, numericAmount, config.treasuryWallet);
       }
+      // Give the chain time to settle, then pick up the new balances
+      setTimeout(() => void refreshBalances(), 10_000);
+      setTimeout(() => void refreshBalances(), 30_000);
     } finally {
       setIsSubmitting(false);
     }
@@ -350,6 +451,29 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             ))}
           </div>
         </motion.section>
+
+        {/* Wallet balances */}
+        <AnimatePresence>
+          {userFriendlyAddress && (
+            <motion.section
+              key="wallet"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="mx-auto mt-5 max-w-[480px]"
+            >
+              <WalletPanel
+                address={userFriendlyAddress}
+                balances={balances}
+                sbcPriceUsd={spotPrice}
+                isLoading={isLoadingBalances}
+                updatedAt={balancesUpdatedAt}
+                onRefresh={() => void refreshBalances()}
+              />
+            </motion.section>
+          )}
+        </AnimatePresence>
 
         {/* Swap card */}
         <motion.section
