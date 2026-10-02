@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://seniorblockchain.github.io/sitemap.xml
