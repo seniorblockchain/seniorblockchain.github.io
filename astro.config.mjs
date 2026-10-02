@@ -50,12 +50,18 @@ export default defineConfig({
         ],
       },
       workbox: {
-        navigateFallback: '/',
+        // Pages are fetched network-first (see runtimeCaching) so every route keeps its own HTML
+        navigateFallback: null,
         globPatterns: ['**/*.{js,css,html,svg,png,ico,json}'],
         globIgnores: ['og-image.png', '**/*.jpg', 'api/**'],
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         cleanupOutdatedCaches: true,
         runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: { cacheName: 'pages', networkTimeoutSeconds: 4, expiration: { maxEntries: 20 } },
+          },
           {
             // Balances and prices must always be live
             urlPattern: ({ url }) => url.hostname.endsWith('tonapi.io') || url.hostname.endsWith('toncenter.com'),

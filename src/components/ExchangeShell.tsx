@@ -345,8 +345,8 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
       </div>
 
       {/* Top bar */}
-      <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#04111b]/75 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4 sm:px-6">
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-white/[0.06] bg-[#04111b]/90 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
+        <div className="safe-x mx-auto flex h-16 max-w-5xl items-center justify-between gap-3">
           <a href="/" className="flex min-w-0 items-center gap-2.5">
             <TokenIcon token="SBC" size="h-9 w-9" />
             <div className="min-w-0 leading-tight">
@@ -435,7 +435,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
         </div>
       </header>
 
-      <main className="relative mx-auto max-w-5xl px-4 pb-[calc(3rem+env(safe-area-inset-bottom))] pt-6 sm:px-6 sm:pt-10">
+      <main className="safe-x relative mx-auto max-w-5xl pb-12 pt-[calc(5.5rem+env(safe-area-inset-top))] sm:pt-[calc(6.5rem+env(safe-area-inset-top))]">
         {/* Price ticker */}
         <motion.section
           initial={{ opacity: 0, y: 12 }}
@@ -488,6 +488,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
         {/* Swap card */}
         <motion.section
           id="trade-panel"
+          style={{ scrollMarginTop: 'calc(5rem + env(safe-area-inset-top))' }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
