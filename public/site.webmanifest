@@ -1,0 +1,13 @@
+{
+  "name": "SBC Exchange",
+  "short_name": "SBC",
+  "description": "Buy and sell SBC with USDT on the TON blockchain.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#04111b",
+  "theme_color": "#04111b",
+  "icons": [
+    { "src": "/logo.png", "sizes": "200x200", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

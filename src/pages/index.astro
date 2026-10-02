@@ -1,9 +1,269 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { ExchangeApp } from '../components/ExchangeApp'
+import exchangeConfig from '../data/exchange-config.json'
+import { FAQ, SITE, TOKEN, TOKENOMICS } from '../data/seo'
+import { formatPrice, getSpotPrice } from '../utils/exchangeMath'
 import '../styles/Theme.css'
+
+const spotPrice = getSpotPrice(exchangeConfig.pool)
+const fmt = (n: number) => new Intl.NumberFormat('en-US').format(n)
+
+const tokenFacts = [
+  { label: 'Token name', value: TOKEN.name },
+  { label: 'Symbol', value: TOKEN.symbol },
+  { label: 'Network', value: TOKEN.network },
+  { label: 'Standard', value: TOKEN.standard },
+  { label: 'Total supply', value: `${fmt(TOKEN.totalSupply)} SBC` },
+  { label: 'Decimals', value: String(TOKEN.decimals) },
+]
+
+const highlights = [
+  {
+    title: 'Built on TON',
+    body: 'SBC lives on The Open Network — fast finality, low fees and native access to millions of Telegram users.',
+  },
+  {
+    title: 'Transparent supply',
+    body: `A total supply of ${fmt(TOKEN.totalSupply)} SBC with a published, on-chain verifiable allocation.`,
+  },
+  {
+    title: 'Utility first',
+    body: 'SBC powers the Senior Blockchain Company ecosystem of programming, blockchain and AI services.',
+  },
+  {
+    title: 'Self-custody',
+    body: 'Trade straight from Tonkeeper or any TON Connect wallet. Your keys never leave your device.',
+  },
+]
+
+const steps = [
+  { title: 'Get a TON wallet', body: 'Install Tonkeeper, MyTonWallet or Telegram Wallet and add a little TON for network fees.' },
+  { title: 'Fund it with USDT', body: 'Deposit USDT on the TON network (jetton USD₮) to your wallet address.' },
+  { title: 'Connect & swap', body: 'Connect your wallet above, enter an amount and review the live quote and price impact.' },
+  { title: 'Confirm', body: 'Approve the transfer in your wallet. Your SBC balance updates as soon as it settles on-chain.' },
+]
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: SITE.name,
+    url: `${SITE.url}/`,
+    applicationCategory: 'FinanceApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires a TON Connect compatible wallet',
+    description:
+      'Non-custodial web app to buy and sell the SBC token with USDT on the TON blockchain using live constant-product pool pricing.',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': `${SITE.url}/#organization` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  },
+]
 ---
 
-<Layout title="SBC Exchange">
+<Layout jsonLd={jsonLd}>
   <ExchangeApp client:load />
+
+  <div class="seo-shell text-white">
+    <div class="mx-auto max-w-5xl px-4 pb-16 sm:px-6">
+      <!-- About -->
+      <section aria-labelledby="about-sbc" class="seo-section">
+        <p class="seo-eyebrow">About SBC</p>
+        <h2 id="about-sbc" class="seo-h2">What is SBC?</h2>
+        <div class="mt-4 grid gap-8 lg:grid-cols-[1.25fr_1fr]">
+          <div class="space-y-4 text-[15px] leading-7 text-slate-300 sm:text-base sm:leading-8">
+            <p>
+              <strong class="font-semibold text-white">SBC</strong> is the native token of
+              <strong class="font-semibold text-white">Senior Blockchain Company</strong>, issued as a jetton on
+              <strong class="font-semibold text-white">The Open Network (TON)</strong>. Guided by the vision
+              <em class="not-italic text-cyan-200">“Decentralize Everything”</em>, SBC connects a growing ecosystem of
+              programming, blockchain and AI services under a single, transparent digital asset.
+            </p>
+            <p>
+              With a total supply of {fmt(TOKEN.totalSupply)} SBC and a published token allocation, SBC is designed for
+              long-term utility: paying for services, rewarding active users and network participants, and moving value
+              across the TON ecosystem in seconds with low network fees.
+            </p>
+            <p>
+              <strong class="font-semibold text-white">SBC Exchange</strong> is the official place to buy and sell SBC with
+              USDT. Prices are calculated from an on-chain style constant-product pool, every quote shows its price impact
+              upfront, and every transfer is signed in your own wallet — no accounts, no sign-up and no custody.
+            </p>
+          </div>
+
+          <dl class="seo-card divide-y divide-white/[0.06] self-start">
+            {tokenFacts.map((fact) => (
+              <div class="flex items-center justify-between gap-4 px-4 py-3 text-sm">
+                <dt class="text-slate-400">{fact.label}</dt>
+                <dd class="text-right font-semibold text-white">{fact.value}</dd>
+              </div>
+            ))}
+            <div class="px-4 py-3 text-sm">
+              <dt class="text-slate-400">Contract address</dt>
+              <dd class="mt-1.5">
+                <a
+                  href={`https://tonviewer.com/${TOKEN.contract}`}
+                  target="_blank"
+                  rel="noopener"
+                  class="break-all font-mono text-xs text-cyan-200 hover:text-cyan-100"
+                >{TOKEN.contract}</a>
+              </dd>
+            </div>
+            <div class="flex items-center justify-between gap-4 px-4 py-3 text-sm">
+              <dt class="text-slate-400">Pool price</dt>
+              <dd class="font-semibold tabular-nums text-white">{formatPrice(spotPrice, 6)}</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- Highlights -->
+      <section aria-labelledby="why-sbc" class="seo-section">
+        <p class="seo-eyebrow">Why SBC</p>
+        <h2 id="why-sbc" class="seo-h2">Built for real utility</h2>
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {highlights.map((item) => (
+            <li class="seo-card p-5">
+              <h3 class="text-base font-semibold text-white">{item.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">{item.body}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Tokenomics -->
+      <section aria-labelledby="tokenomics" class="seo-section">
+        <p class="seo-eyebrow">Tokenomics</p>
+        <h2 id="tokenomics" class="seo-h2">SBC token distribution</h2>
+        <p class="mt-3 max-w-2xl text-[15px] leading-7 text-slate-400">
+          {fmt(TOKEN.totalSupply)} SBC in total, allocated to grow the network while keeping the team aligned for the long term.
+        </p>
+        <div class="seo-card mt-6 p-4 sm:p-5">
+          <div class="flex h-3 overflow-hidden rounded-full" role="img" aria-label="SBC allocation bar">
+            {TOKENOMICS.map((item, i) => <span class={`seo-bar-${i}`} style={`width:${item.share}%`} />)}
+          </div>
+          <ul class="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+            {TOKENOMICS.map((item, i) => (
+              <li class="flex gap-3">
+                <span class={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full seo-bar-${i}`} />
+                <div class="min-w-0">
+                  <p class="flex items-baseline justify-between gap-3 text-sm">
+                    <span class="font-semibold text-white">{item.label}</span>
+                    <span class="tabular-nums text-slate-300">
+                      {item.share}% · {fmt((TOKEN.totalSupply * item.share) / 100)}
+                    </span>
+                  </p>
+                  <p class="mt-0.5 text-[13px] text-slate-500">{item.note}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- How to buy -->
+      <section aria-labelledby="how-to-buy" class="seo-section">
+        <p class="seo-eyebrow">Guide</p>
+        <h2 id="how-to-buy" class="seo-h2">How to buy SBC</h2>
+        <ol class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((step, i) => (
+            <li class="seo-card p-5">
+              <span class="text-xs font-semibold tabular-nums text-cyan-300">Step {i + 1}</span>
+              <h3 class="mt-1.5 text-base font-semibold text-white">{step.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-400">{step.body}</p>
+            </li>
+          ))}
+        </ol>
+        <a href="#trade-panel" class="mt-6 inline-flex h-12 items-center rounded-xl bg-emerald-500 px-6 text-sm font-semibold text-white transition-colors hover:bg-emerald-400">
+          Buy SBC now
+        </a>
+      </section>
+
+      <!-- FAQ -->
+      <section aria-labelledby="faq" class="seo-section">
+        <p class="seo-eyebrow">FAQ</p>
+        <h2 id="faq" class="seo-h2">Frequently asked questions</h2>
+        <div class="mt-6 space-y-2">
+          {FAQ.map((item, i) => (
+            <details class="seo-card group" open={i === 0}>
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 text-[15px] font-semibold text-white sm:px-5">
+                <h3>{item.q}</h3>
+                <svg class="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+                </svg>
+              </summary>
+              <p class="break-words px-4 pb-4 text-sm leading-7 text-slate-400 sm:px-5">{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <p class="mt-12 text-xs leading-6 text-slate-500">
+        Cryptocurrency prices are volatile. Prices shown are derived from the SBC/USDT pool and may differ from other markets.
+        Nothing on this page is financial advice — always do your own research and verify the contract address before trading.
+      </p>
+    </div>
+
+    <footer class="border-t border-white/[0.06]">
+      <div class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-4 py-6 text-xs text-slate-500 sm:flex-row sm:px-6">
+        <p>© {new Date().getFullYear()} {SITE.organization} · {SITE.slogan}</p>
+        <nav aria-label="Footer" class="flex gap-5">
+          <a href="/guide" class="hover:text-white">How it works</a>
+          <a href={`https://tonviewer.com/${TOKEN.contract}`} target="_blank" rel="noopener" class="hover:text-white">Tonviewer</a>
+          <a href="https://www.instagram.com/seniorblockchain" target="_blank" rel="noopener" class="hover:text-white">Instagram</a>
+        </nav>
+      </div>
+    </footer>
+  </div>
 </Layout>
+
+<style>
+  .seo-shell {
+    background: #04111b;
+  }
+  .seo-section {
+    padding-top: 4rem;
+  }
+  .seo-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(103 232 249);
+  }
+  .seo-h2 {
+    margin-top: 0.5rem;
+    font-size: 1.625rem;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: white;
+  }
+  @media (min-width: 640px) {
+    .seo-h2 {
+      font-size: 2rem;
+    }
+  }
+  .seo-card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    background: #081925;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .seo-bar-0 { background: #22d3ee; }
+  .seo-bar-1 { background: #10b981; }
+  .seo-bar-2 { background: #a3e635; }
+  .seo-bar-3 { background: #f59e0b; }
+  .seo-bar-4 { background: #6366f1; }
+</style>

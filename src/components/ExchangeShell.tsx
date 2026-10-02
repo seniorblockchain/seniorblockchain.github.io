@@ -326,7 +326,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#04111b] text-white">
+    <div className="relative overflow-hidden bg-[#04111b] text-white">
       {/* Background */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-[-12rem] h-[34rem] w-[52rem] -translate-x-1/2 rounded-full bg-cyan-400/[0.13] blur-[120px]" />
@@ -440,7 +440,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
           <h1 className="mt-4 text-[28px] font-bold leading-tight tracking-tight text-white sm:text-4xl">
             {config.content.headline}
           </h1>
-          <p className="mt-2 text-sm text-slate-400 sm:text-base">Swap SBC and USDT instantly, straight from your wallet.</p>
+          <p className="mt-2 text-sm text-slate-400 sm:text-base">Swap SBC and USDT instantly on the TON blockchain — straight from your wallet.</p>
 
           <div className="mt-6 grid grid-cols-3 divide-x divide-white/[0.07] rounded-2xl border border-white/[0.08] bg-white/[0.03] py-3 backdrop-blur">
             {stats.map((stat) => (
@@ -662,54 +662,8 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
           </p>
         </motion.section>
 
-        {/* Info cards */}
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-10 grid max-w-[480px] gap-3 sm:max-w-none sm:grid-cols-3"
-        >
-          {[
-            {
-              title: 'Connect',
-              body: 'Link Tonkeeper or any TON wallet in one tap.',
-              icon: 'M21 12V7H5a2 2 0 0 1 0-4h14v4M3 5v14a2 2 0 0 0 2 2h16v-5m-4-2h4v4h-4a2 2 0 0 1 0-4z',
-            },
-            {
-              title: 'Get a quote',
-              body: 'Live pricing from the SBC/USDT pool with impact shown upfront.',
-              icon: 'M3 3v18h18M7 15l4-4 3 3 6-6',
-            },
-            {
-              title: 'Confirm',
-              body: 'Approve the transfer in your wallet — that’s it.',
-              icon: 'M5 13l4 4L19 7',
-            },
-          ].map((step, index) => (
-            <div key={step.title} className="flex gap-4 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4 sm:flex-col sm:gap-3 sm:p-5">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-300/10 text-cyan-200">
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d={step.icon} />
-                </svg>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-white">
-                  <span className="mr-1.5 text-slate-500">0{index + 1}</span>
-                  {step.title}
-                </p>
-                <p className="mt-1 text-[13px] leading-relaxed text-slate-400">{step.body}</p>
-              </div>
-            </div>
-          ))}
-        </motion.section>
       </main>
 
-      <footer className="relative border-t border-white/[0.06] py-6 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} Senior Blockchain Company ·{' '}
-        <a href="/guide" className="text-slate-400 hover:text-white">
-          How it works
-        </a>
-      </footer>
     </div>
   );
 };

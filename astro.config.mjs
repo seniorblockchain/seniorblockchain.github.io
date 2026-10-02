@@ -4,6 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
+  site: 'https://seniorblockchain.github.io',
   integrations: [react(), tailwind()],
   vite: {
     plugins: [
