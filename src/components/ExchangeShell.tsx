@@ -15,6 +15,7 @@ import {
   type PoolState,
 } from '../utils/exchangeMath';
 import { fetchWalletBalances, type WalletBalances } from '../utils/fetchWalletBalances';
+import { InstallPrompt } from './InstallPrompt';
 
 type ExchangeConfig = typeof exchangeConfig;
 type TradeMode = 'buy' | 'sell';
@@ -227,6 +228,15 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
     }
   }, [userFriendlyAddress]);
 
+  // Deep links / PWA shortcuts: /?mode=sell
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get('mode');
+    if (requested === 'sell' || requested === 'buy') {
+      setMode(requested);
+      if (requested === 'sell') setTradeAmount('');
+    }
+  }, []);
+
   useEffect(() => {
     void refreshBalances();
   }, [refreshBalances]);
@@ -335,7 +345,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
       </div>
 
       {/* Top bar */}
-      <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#04111b]/75 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#04111b]/75 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-3 px-4 sm:px-6">
           <a href="/" className="flex min-w-0 items-center gap-2.5">
             <TokenIcon token="SBC" size="h-9 w-9" />
@@ -664,6 +674,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
 
       </main>
 
+      <InstallPrompt />
     </div>
   );
 };

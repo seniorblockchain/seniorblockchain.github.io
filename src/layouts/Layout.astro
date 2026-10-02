@@ -71,9 +71,11 @@ const structuredData = [...baseJsonLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jso
     <!-- Icons & PWA -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/logo.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="apple-mobile-web-app-title" content="SBC" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="application-name" content="SBC EX" />
+    <meta name="apple-mobile-web-app-title" content="SBC EX" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="format-detection" content="telephone=no" />
@@ -124,6 +126,12 @@ const structuredData = [...baseJsonLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jso
     </style>
   </body>
 </html>
+
+<script>
+import { registerSW } from 'virtual:pwa-register';
+
+registerSW({ immediate: true });
+</script>
 
 <script>
 import { OverlayScrollbars } from "overlayscrollbars";
