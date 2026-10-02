@@ -51,9 +51,9 @@ const TokenIcon: React.FC<{ token: Token; size?: string }> = ({ token, size = 'h
 );
 
 const TokenBadge: React.FC<{ token: Token }> = ({ token }) => (
-  <div className="flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] py-1.5 pl-1.5 pr-3.5">
-    <TokenIcon token={token} />
-    <span className="text-base font-bold text-white">{token}</span>
+  <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.06] py-1 pl-1 pr-3 xs:gap-2 xs:py-1.5 xs:pl-1.5 xs:pr-3.5">
+    <TokenIcon token={token} size="h-6 w-6 xs:h-7 xs:w-7" />
+    <span className="text-sm font-semibold text-white xs:text-base">{token}</span>
   </div>
 );
 
@@ -69,7 +69,7 @@ const Spinner = () => (
 );
 
 const amountSize = (text: string) =>
-  text.length > 9 ? 'text-[26px] xs:text-[34px] sm:text-[40px]' : 'text-[34px] sm:text-[40px]';
+  text.length > 9 ? 'text-2xl xs:text-[34px] sm:text-[40px]' : 'text-[30px] xs:text-[34px] sm:text-[40px]';
 
 const impactTone = (impact: number) => {
   if (impact < 0.01) return 'text-emerald-300';
@@ -215,13 +215,13 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
   const ctaAction = userFriendlyAddress ? handleTrade : connectWallet;
   const accent =
     mode === 'buy'
-      ? 'from-cyan-300 to-teal-400 shadow-[0_12px_40px_-8px_rgba(34,211,238,0.55)]'
-      : 'from-emerald-300 to-lime-300 shadow-[0_12px_40px_-8px_rgba(52,211,153,0.55)]';
+      ? 'bg-cyan-300 hover:bg-cyan-200'
+      : 'bg-emerald-300 hover:bg-emerald-200';
 
   const stats = [
     { label: 'SBC price', value: formatPrice(spotPrice, 6) },
     { label: 'Liquidity', value: formatPrice(pool.usdt, 0) },
-    { label: 'SBC in pool', value: formatCompactNumber(pool.sbc, 0) },
+    { label: 'Pool SBC', value: formatCompactNumber(pool.sbc, 0) },
   ];
 
   return (
@@ -280,7 +280,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -6, scale: 0.98 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-2 w-64 overflow-hidden rounded-2xl border border-white/10 bg-[#0a1c2a]/95 p-1.5 shadow-2xl backdrop-blur-xl"
+                      className="absolute right-0 mt-2 w-64 overflow-hidden rounded-2xl border border-white/10 bg-[#0a1c2a] p-1.5"
                     >
                       <div className="px-3 py-2.5">
                         <p className="text-[11px] uppercase tracking-wider text-slate-500">Connected</p>
@@ -312,9 +312,9 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             ) : (
               <button
                 onClick={connectWallet}
-                className="flex h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-300 to-teal-400 px-4 text-sm font-bold text-slate-950 shadow-[0_8px_24px_-6px_rgba(34,211,238,0.6)] transition hover:brightness-110 active:scale-[0.98]"
+                className="flex h-10 items-center gap-2 rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-200 active:bg-cyan-400"
               >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
+                <svg className="hidden h-4 w-4 xs:block" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 12V7H5a2 2 0 0 1 0-4h14v4M3 5v14a2 2 0 0 0 2 2h16v-5m-4-2h4v4h-4a2 2 0 0 1 0-4z" />
                 </svg>
                 Connect
@@ -344,7 +344,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
           <div className="mt-6 grid grid-cols-3 divide-x divide-white/[0.07] rounded-2xl border border-white/[0.08] bg-white/[0.03] py-3 backdrop-blur">
             {stats.map((stat) => (
               <div key={stat.label} className="min-w-0 px-2">
-                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-slate-500 sm:text-[11px]">{stat.label}</p>
+                <p className="whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.08em] text-slate-500 xs:tracking-[0.14em] sm:text-[11px]">{stat.label}</p>
                 <p className="mt-1 truncate text-sm font-bold tabular-nums text-white sm:text-base">{stat.value}</p>
               </div>
             ))}
@@ -359,14 +359,14 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
           transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto mt-5 max-w-[480px]"
         >
-          <div className="rounded-[28px] border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.03] p-2 shadow-[0_30px_100px_-20px_rgba(0,0,0,0.6)] backdrop-blur-2xl">
+          <div className="rounded-3xl border border-white/10 bg-[#081925] p-1.5 sm:p-2">
             {/* Mode switch */}
-            <div className="relative grid grid-cols-2 rounded-[20px] bg-black/25 p-1">
+            <div className="relative grid grid-cols-2 rounded-2xl bg-black/25 p-1">
               {(['buy', 'sell'] as TradeMode[]).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => switchMode(tab)}
-                  className={`relative z-10 h-11 rounded-2xl text-[15px] font-bold capitalize transition-colors ${
+                  className={`relative z-10 h-11 rounded-xl text-[15px] font-semibold capitalize transition-colors ${
                     mode === tab ? 'text-slate-950' : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -374,7 +374,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
                     <motion.span
                       layoutId="mode-pill"
                       transition={{ type: 'spring', stiffness: 500, damping: 38 }}
-                      className={`absolute inset-0 -z-10 rounded-2xl ${tab === 'buy' ? 'bg-cyan-300' : 'bg-emerald-300'}`}
+                      className={`absolute inset-0 -z-10 rounded-xl ${tab === 'buy' ? 'bg-cyan-300' : 'bg-emerald-300'}`}
                     />
                   )}
                   {tab} SBC
@@ -383,7 +383,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             </div>
 
             {/* Pay */}
-            <div className="mt-2 rounded-[22px] border border-white/[0.06] bg-[#06141f]/80 p-4 transition focus-within:border-cyan-300/30 sm:p-5">
+            <div className="mt-2 rounded-2xl border border-white/[0.06] bg-[#06141f] p-4 transition focus-within:border-cyan-300/30 sm:p-5">
               <div className="flex items-center justify-between text-[13px]">
                 <span className="font-medium text-slate-400">{mode === 'buy' ? 'You pay' : 'You sell'}</span>
                 <span className="text-slate-500">
@@ -433,7 +433,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
               <button
                 onClick={() => switchMode(mode === 'buy' ? 'sell' : 'buy')}
                 aria-label="Switch direction"
-                className="group flex h-11 w-11 items-center justify-center rounded-2xl border-4 border-[#0b1a26] bg-[#11283a] text-cyan-200 transition hover:bg-[#163449] active:scale-95"
+                className="group flex h-11 w-11 items-center justify-center rounded-xl border-4 border-[#081925] bg-[#12293a] text-cyan-200 transition-colors hover:bg-[#183448]"
               >
                 <svg className="h-5 w-5 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7 4v16m0 0-4-4m4 4 4-4M17 20V4m0 0 4 4m-4-4-4 4" />
@@ -442,7 +442,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             </div>
 
             {/* Receive */}
-            <div className="rounded-[22px] border border-white/[0.06] bg-[#06141f]/50 p-4 sm:p-5">
+            <div className="rounded-2xl border border-white/[0.06] bg-[#0a1d2b] p-4 sm:p-5">
               <div className="flex items-center justify-between text-[13px]">
                 <span className="font-medium text-slate-400">You receive</span>
                 <span className="text-slate-500">
@@ -523,7 +523,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             <button
               onClick={() => void ctaAction()}
               disabled={ctaDisabled}
-              className={`mt-2 flex h-14 w-full items-center justify-center gap-2 rounded-[20px] bg-gradient-to-r text-[16px] font-bold text-slate-950 transition active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-none disabled:bg-white/[0.06] disabled:text-slate-500 disabled:shadow-none ${accent} hover:brightness-110`}
+              className={`mt-2 flex h-14 w-full items-center justify-center gap-2 rounded-2xl text-base font-semibold text-slate-950 transition-colors disabled:cursor-not-allowed disabled:bg-white/[0.06] disabled:text-slate-500 ${accent}`}
             >
               {isSubmitting && <Spinner />}
               {ctaLabel}
