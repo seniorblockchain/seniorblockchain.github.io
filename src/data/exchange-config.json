@@ -1,9 +1,9 @@
 {
   "projectName": "SBC Exchange",
-  "treasuryWallet": "UQCUS0q4DJLKBL_dxO492OFd3H-ajpB0_wUfamWNHne1_ehf",
+  "treasuryWallet": "UQC2rQqAxR5fSZxssAiQCcVEXn3Aq0TiMQgQFTKlPSQPQcaX",
   "pool": {
     "sbc": 3198544,
-    "usdt": 11200
+    "usdt": 11209
   },
   "chart": {
     "samples": 18,
