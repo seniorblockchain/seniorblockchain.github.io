@@ -228,6 +228,39 @@ input:focus, button:focus, a:focus {
 }
 
 /* Safe areas (notch, status bar, home indicator) */
+.exchange-app button,
+.exchange-app a {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.exchange-app :is(button, a, input):focus-visible {
+  outline: 2px solid #67e8f9;
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) and (max-height: 700px) {
+  .exchange-app .exchange-content {
+    padding-top: calc(4.5rem + env(safe-area-inset-top));
+  }
+  .exchange-app .trade-heading {
+    margin-bottom: 0.75rem;
+  }
+  .exchange-app .trade-modes button {
+    height: 2.75rem;
+  }
+  .exchange-app .trade-amount {
+    padding: 0.75rem;
+  }
+  .exchange-app .trade-amount-row,
+  .exchange-app .trade-amount > :last-child {
+    margin-top: 0.5rem;
+  }
+  .exchange-app .trade-amount :is(input, .trade-output) {
+    line-height: 1.2;
+  }
+}
+
 @layer utilities {
   .safe-x {
     padding-left: max(1rem, env(safe-area-inset-left));

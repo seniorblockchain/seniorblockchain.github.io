@@ -191,7 +191,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
   const [balancesUpdatedAt, setBalancesUpdatedAt] = useState<Date | null>(null);
   const [isLoadingBalances, setIsLoadingBalances] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showDetails, setShowDetails] = useState(true);
+  const [showDetails, setShowDetails] = useState(false);
   const [walletMenuOpen, setWalletMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const walletMenuRef = useRef<HTMLDivElement>(null);
@@ -209,6 +209,10 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
   const receiveUsdValue = mode === 'buy' ? activeQuote.amountOut * spotPrice : activeQuote.amountOut;
   const payUsdValue = mode === 'buy' ? numericAmount : numericAmount * spotPrice;
   const receiveText = formatCompactNumber(activeQuote.amountOut, receiveToken === 'USDT' ? 2 : 4);
+
+  useEffect(() => {
+    setShowDetails(window.matchMedia('(min-width: 768px)').matches);
+  }, []);
 
   const refreshBalances = useCallback(async () => {
     if (!userFriendlyAddress) {
@@ -336,12 +340,12 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
   ];
 
   return (
-    <div className="relative overflow-hidden bg-[#04111b] text-white">
+    <div className="exchange-app relative min-h-[100svh] overflow-hidden bg-[#04111b] text-white md:min-h-0">
       {/* Background */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-[-12rem] h-[34rem] w-[52rem] -translate-x-1/2 rounded-full bg-cyan-400/[0.13] blur-[120px]" />
         <div className="absolute right-[-10rem] top-[20rem] h-[22rem] w-[22rem] rounded-full bg-emerald-400/[0.08] blur-[100px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)]" />
+        <div className="absolute inset-0 hidden bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)] md:block" />
       </div>
 
       {/* Top bar */}
@@ -351,7 +355,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             <TokenIcon token="SBC" size="h-9 w-9" />
             <div className="min-w-0 leading-tight">
               <p className="truncate text-[15px] font-bold tracking-tight text-white">{config.projectName}</p>
-              <p className="hidden text-[11px] text-slate-400 xs:block">{config.content.subheadline}</p>
+              <p className="hidden text-[11px] text-slate-400 md:block">{config.content.subheadline}</p>
             </div>
           </a>
 
@@ -359,7 +363,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             <a
               href="/guide"
               aria-label="Guide"
-              className="flex h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
+              className="hidden h-10 items-center gap-2 rounded-xl px-3 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white md:flex"
             >
               <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.25v13m0-13C10.83 5.48 9.25 5 7.5 5S4.17 5.48 3 6.25v13C4.17 18.48 5.75 18 7.5 18s3.33.48 4.5 1.25m0-13C13.17 5.48 14.75 5 16.5 5c1.75 0 3.33.48 4.5 1.25v13C19.83 18.48 18.25 18 16.5 18c-1.75 0-3.33.48-4.5 1.25" />
@@ -372,7 +376,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
                 <button
                   onClick={() => setWalletMenuOpen((open) => !open)}
                   aria-expanded={walletMenuOpen}
-                  className="flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] pl-3 pr-2.5 text-sm font-semibold text-white transition hover:border-cyan-300/30"
+                  className="flex h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] pl-3 pr-2.5 text-sm font-semibold text-white transition hover:border-cyan-300/30 md:h-10"
                 >
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
@@ -423,7 +427,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             ) : (
               <button
                 onClick={connectWallet}
-                className="flex h-10 items-center gap-2 rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-200 active:bg-cyan-400"
+                className="flex h-11 items-center gap-2 rounded-xl bg-cyan-300 px-4 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-200 active:bg-cyan-400 md:h-10"
               >
                 <svg className="hidden h-4 w-4 xs:block" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 12V7H5a2 2 0 0 1 0-4h14v4M3 5v14a2 2 0 0 0 2 2h16v-5m-4-2h4v4h-4a2 2 0 0 1 0-4z" />
@@ -435,13 +439,13 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
         </div>
       </header>
 
-      <main className="safe-x relative mx-auto max-w-5xl pb-12 pt-[calc(5.5rem+env(safe-area-inset-top))] sm:pt-[calc(6.5rem+env(safe-area-inset-top))]">
+      <div className="exchange-content safe-x relative mx-auto max-w-5xl pb-[max(1rem,env(safe-area-inset-bottom))] pt-[calc(5.5rem+env(safe-area-inset-top))] md:pb-12 md:pt-[calc(6.5rem+env(safe-area-inset-top))]">
         {/* Price ticker */}
         <motion.section
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto max-w-[480px] text-center"
+          className="mx-auto hidden max-w-[480px] text-center md:block"
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
@@ -471,7 +475,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="mx-auto mt-5 max-w-[480px]"
+              className="mx-auto mt-5 hidden max-w-[480px] md:block"
             >
               <WalletPanel
                 address={userFriendlyAddress}
@@ -488,20 +492,30 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
         {/* Swap card */}
         <motion.section
           id="trade-panel"
+          aria-label="Buy and sell SBC"
           style={{ scrollMarginTop: 'calc(5rem + env(safe-area-inset-top))' }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-5 max-w-[480px]"
+          className="mx-auto w-full max-w-[480px] md:mt-5"
         >
-          <div className="rounded-3xl border border-white/10 bg-[#081925] p-1.5 sm:p-2">
+          <div className="trade-heading mb-5 flex items-center justify-between px-1 md:hidden">
+            <h1 className="text-2xl font-bold tracking-tight">Swap tokens</h1>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-300/15 bg-cyan-300/[0.06] px-3 py-1.5 text-xs font-medium text-cyan-200">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-300" aria-hidden="true" />
+              TON
+            </span>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-[#081925] p-2 shadow-[0_20px_60px_-24px_rgba(0,0,0,0.65)] md:shadow-none">
             {/* Mode switch */}
-            <div className="relative grid grid-cols-2 rounded-2xl bg-black/25 p-1">
+            <div className="trade-modes relative grid grid-cols-2 rounded-2xl bg-black/25 p-1">
               {(['buy', 'sell'] as TradeMode[]).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => switchMode(tab)}
-                  className={`relative z-10 h-11 rounded-xl text-[15px] font-semibold capitalize transition-colors ${
+                  aria-pressed={mode === tab}
+                  className={`relative z-10 h-12 rounded-xl text-[15px] font-semibold capitalize transition-colors md:h-11 ${
                     mode === tab ? 'text-white' : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -518,7 +532,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             </div>
 
             {/* Pay */}
-            <div className="mt-2 rounded-2xl border border-white/[0.06] bg-[#06141f] p-4 transition focus-within:border-cyan-300/30 sm:p-5">
+            <div className="trade-amount mt-2 rounded-2xl border border-white/[0.06] bg-[#06141f] p-4 transition focus-within:border-cyan-300/30 sm:p-5">
               <div className="flex items-center justify-between text-[13px]">
                 <span className="font-medium text-slate-400">{mode === 'buy' ? 'You pay' : 'You sell'}</span>
                 <span className="text-slate-500">
@@ -531,7 +545,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
                 </span>
               </div>
 
-              <div className="mt-3 flex items-center gap-3">
+              <div className="trade-amount-row mt-3 flex items-center gap-3">
                 <input
                   type="text"
                   inputMode="decimal"
@@ -553,7 +567,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
                       <button
                         key={portion}
                         onClick={() => setPortion(portion)}
-                        className="h-7 rounded-lg bg-white/[0.06] px-2.5 text-xs font-semibold text-slate-300 transition hover:bg-cyan-300/15 hover:text-cyan-200"
+                        className="h-11 min-w-11 rounded-lg bg-white/[0.06] px-2.5 text-xs font-semibold text-slate-300 transition hover:bg-cyan-300/15 hover:text-cyan-200 active:bg-cyan-300/20 md:h-7 md:min-w-0"
                       >
                         {portion === 1 ? 'MAX' : `${portion * 100}%`}
                       </button>
@@ -577,7 +591,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             </div>
 
             {/* Receive */}
-            <div className="rounded-2xl border border-white/[0.06] bg-[#0a1d2b] p-4 sm:p-5">
+            <div className="trade-amount rounded-2xl border border-white/[0.06] bg-[#0a1d2b] p-4 sm:p-5">
               <div className="flex items-center justify-between text-[13px]">
                 <span className="font-medium text-slate-400">You receive</span>
                 <span className="text-slate-500">
@@ -590,8 +604,8 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
                 </span>
               </div>
 
-              <div className="mt-3 flex items-center gap-3">
-                <p className={`min-w-0 flex-1 truncate font-bold tabular-nums tracking-tight ${amountSize(receiveText)} ${activeQuote.amountOut > 0 ? 'text-white' : 'text-slate-600'}`}>
+              <div className="trade-amount-row mt-3 flex items-center gap-3">
+                <p className={`trade-output min-w-0 flex-1 truncate font-bold tabular-nums tracking-tight ${amountSize(receiveText)} ${activeQuote.amountOut > 0 ? 'text-white' : 'text-slate-600'}`}>
                   {receiveText}
                 </p>
                 <TokenBadge token={receiveToken} />
@@ -605,6 +619,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
               <button
                 onClick={() => setShowDetails((open) => !open)}
                 aria-expanded={showDetails}
+                aria-controls="trade-details"
                 className="flex h-11 w-full items-center justify-between text-[13px] text-slate-300"
               >
                 <span className="tabular-nums">
@@ -625,6 +640,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
               <AnimatePresence initial={false}>
                 {showDetails && (
                   <motion.dl
+                    id="trade-details"
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
@@ -665,7 +681,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             </button>
           </div>
 
-          <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs text-slate-500">
+          <p className="mt-4 hidden items-center justify-center gap-1.5 text-center text-xs text-slate-500 md:flex">
             <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V7l7-4z" />
             </svg>
@@ -673,7 +689,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
           </p>
         </motion.section>
 
-      </main>
+      </div>
 
       <InstallPrompt />
     </div>
