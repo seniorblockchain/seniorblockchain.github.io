@@ -12,7 +12,9 @@ const displayMessage = (message: string, type: 'success' | 'error') => {
     messageDiv = document.createElement('div');
     messageDiv.id = 'message-box';
     messageDiv.style.position = 'fixed';
-    messageDiv.style.bottom = '20px';
+    messageDiv.style.bottom = 'calc(20px + env(safe-area-inset-bottom, 0px))';
+    messageDiv.style.width = 'max-content';
+    messageDiv.style.maxWidth = 'calc(100% - 2 * max(20px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px)))';
     messageDiv.style.left = '50%';
     messageDiv.style.transform = 'translateX(-50%)';
     messageDiv.style.padding = '15px 20px';

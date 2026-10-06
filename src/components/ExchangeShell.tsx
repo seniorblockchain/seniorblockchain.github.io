@@ -340,7 +340,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
   ];
 
   return (
-    <div className="exchange-app relative min-h-[100svh] overflow-hidden bg-[#04111b] text-white md:min-h-0">
+    <div className="exchange-app relative min-h-[100dvh] overflow-hidden bg-[#04111b] text-white md:min-h-0">
       {/* Background */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-[-12rem] h-[34rem] w-[52rem] -translate-x-1/2 rounded-full bg-cyan-400/[0.13] blur-[120px]" />
@@ -550,7 +550,10 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
                 <input
                   type="text"
                   inputMode="decimal"
+                  enterKeyHint="done"
                   autoComplete="off"
+                  autoCapitalize="none"
+                  autoCorrect="off"
                   aria-label={`Amount of ${payToken}`}
                   value={tradeAmount}
                   onChange={(event) => setTradeAmount(sanitizeAmount(event.target.value))}

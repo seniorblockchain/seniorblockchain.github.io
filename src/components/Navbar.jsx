@@ -16,10 +16,10 @@ export const Navbar = () => {
 
   return (
     <nav
-      className="w-full h-20 flex flex-col justify-center items-center fixed bg-bgDark1/95 backdrop-blur-xl border-b border-mainBorder z-50 shadow-xl"
+      className="w-full h-[calc(5rem+env(safe-area-inset-top,0px))] pt-[env(safe-area-inset-top,0px)] flex flex-col justify-center items-center fixed top-0 bg-bgDark1/95 backdrop-blur-xl border-b border-mainBorder z-50 shadow-xl"
       aria-label="Main navigation"
     >
-      <div className="w-full max-w-7xl flex justify-between items-center px-4 sm:px-6 lg:px-8">
+      <div className="safe-x w-full max-w-7xl flex justify-between items-center lg:px-8">
         {/* Logo Section */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -76,9 +76,11 @@ export const Navbar = () => {
 
         {/* Mobile Menu Toggle */}
         <motion.button
-          className="lg:hidden flex flex-col justify-center items-center w-8 h-8 focus:outline-none group"
+          className="lg:hidden flex flex-col justify-center items-center w-11 h-11 rounded-lg focus:outline-none group"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
+          aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
@@ -93,7 +95,8 @@ export const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="menu-dropdown absolute right-4 top-16 w-56 bg-bgDark2 border border-mainBorder rounded-xl shadow-2xl z-50 flex flex-col items-stretch py-3"
+            id="mobile-navigation"
+            className="menu-dropdown absolute right-[max(1rem,env(safe-area-inset-right,0px))] top-[calc(5rem+env(safe-area-inset-top,0px))] max-h-[calc(100dvh-6rem-env(safe-area-inset-top,0px)-env(safe-area-inset-bottom,0px))] overflow-y-auto overscroll-contain w-56 bg-bgDark2 border border-mainBorder rounded-xl shadow-2xl z-50 flex flex-col items-stretch py-3"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -105,7 +108,7 @@ export const Navbar = () => {
                 href={href}
                 aria-label={ariaLabel}
                 onClick={() => setIsOpen(false)}
-                className="px-5 py-2 text-secondaryText hover:text-primaryColor text-base font-medium transition-all duration-200 rounded-md bg-transparent border-none shadow-none focus:outline-none focus:ring-0 text-left"
+                className="px-5 py-3 text-secondaryText hover:text-primaryColor text-base font-medium transition-all duration-200 rounded-md bg-transparent border-none shadow-none focus:outline-none focus:ring-0 text-left"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.2, delay: index * 0.05 }}

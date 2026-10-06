@@ -4,6 +4,34 @@
 
 /* Professional Exchange Styles */
 @layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  input, textarea, select {
+    /* Keep Safari from zooming on focus; larger trading amounts keep their size. */
+    font-size: 16px;
+  }
+
+  button, a, summary, [role="button"] {
+    touch-action: manipulation;
+    transition: opacity 120ms ease-out;
+  }
+
+  button, summary, [role="button"], nav a, .contained-button, .outlined-button, .guide-link {
+    /* Controls are not copyable content. Body text and contract links still are. */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  :is(button, a, summary, [role="button"]):not(:disabled):not([aria-disabled="true"]):active {
+    /* Immediate feedback replaces the browser's tap highlight. */
+    opacity: 0.75;
+  }
+
   * {
     scroll-behavior: smooth;
   }
@@ -121,8 +149,10 @@
 }
 
 @layer utilities {
-  .hover\:bg-primaryHover:hover {
-    background-color: rgb(0, 112, 188);
+  @media (hover: hover) and (pointer: fine) {
+    .hover\:bg-primaryHover:hover {
+      background-color: rgb(0, 112, 188);
+    }
   }
   
   /* Animation utilities */
@@ -185,11 +215,6 @@ input:focus, button:focus, a:focus {
   outline-offset: 2px;
 }
 
-.menu-dropdown a:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
 /* Responsive text scaling */
 @media (max-width: 640px) {
   .text-responsive-xl {
@@ -227,14 +252,15 @@ input:focus, button:focus, a:focus {
   100% { background-position: 200% 0; }
 }
 
-/* Safe areas (notch, status bar, home indicator) */
-.exchange-app button,
-.exchange-app a {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
+/* Installed app gestures should not trigger a whole-page refresh. Documents in
+   the browser retain their normal scrolling and pull-to-refresh behavior. */
+@media (display-mode: standalone) {
+  html, body {
+    overscroll-behavior-y: none;
+  }
 }
 
-.exchange-app :is(button, a, input):focus-visible {
+:is(button, a, summary, input, textarea, select, [role="button"]):focus-visible {
   outline: 2px solid #67e8f9;
   outline-offset: 3px;
 }
@@ -263,16 +289,16 @@ input:focus, button:focus, a:focus {
 
 @layer utilities {
   .safe-x {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1rem, env(safe-area-inset-right, 0px));
   }
   @media (min-width: 640px) {
     .safe-x {
-      padding-left: max(1.5rem, env(safe-area-inset-left));
-      padding-right: max(1.5rem, env(safe-area-inset-right));
+      padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+      padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
     }
   }
   .safe-bottom {
-    padding-bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 0.75rem));
+    padding-bottom: max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 0.75rem));
   }
 }

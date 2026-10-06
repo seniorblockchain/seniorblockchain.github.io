@@ -11,7 +11,7 @@ const spotPrice = getSpotPrice(exchangeConfig.pool)
   title="How SBC Exchange Works | SBC"
   description="Learn about SBC pricing, price impact and treasury payments."
 >
-  <section class="guide-shell min-h-screen text-white">
+  <section class="guide-shell min-h-[100svh] text-white">
     <div class="safe-x safe-bottom mx-auto max-w-4xl pt-[calc(2rem+env(safe-area-inset-top))]">
       <div class="guide-stack space-y-4">
         <header class="guide-card guide-hero px-5 py-5 sm:px-6">
@@ -137,10 +137,12 @@ const spotPrice = getSpotPrice(exchangeConfig.pool)
       animation: guide-scan 6s linear infinite;
     }
 
-    .guide-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(103, 232, 249, 0.22);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.035));
+    @media (hover: hover) and (pointer: fine) {
+      .guide-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(103, 232, 249, 0.22);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.035));
+      }
     }
 
     .guide-hero {
@@ -169,10 +171,12 @@ const spotPrice = getSpotPrice(exchangeConfig.pool)
       transition: border-color 180ms ease, transform 180ms ease, color 180ms ease;
     }
 
-    .guide-link:hover {
-      color: white;
-      border-color: rgba(103, 232, 249, 0.35);
-      transform: translateY(-1px);
+    @media (hover: hover) and (pointer: fine) {
+      .guide-link:hover {
+        color: white;
+        border-color: rgba(103, 232, 249, 0.35);
+        transform: translateY(-1px);
+      }
     }
 
     .guide-badge {
@@ -198,9 +202,11 @@ const spotPrice = getSpotPrice(exchangeConfig.pool)
       transition: border-color 180ms ease, transform 180ms ease;
     }
 
-    .guide-row:hover {
-      transform: translateX(2px);
-      border-color: rgba(103, 232, 249, 0.18);
+    @media (hover: hover) and (pointer: fine) {
+      .guide-row:hover {
+        transform: translateX(2px);
+        border-color: rgba(103, 232, 249, 0.18);
+      }
     }
 
     .guide-step {

@@ -27,8 +27,8 @@ const footerData = [
 
 export const Footer = () => {
   return (
-    <footer aria-label="Site footer" className="bg-bgDark1 pt-10 lg:pt-20 pb-8 lg:pb-16">
-      <div className="container mx-auto px-4 w-4/5 md:w-11/12 lg:w-10/12 xl:w-4/5 2xl:w-2/3">
+    <footer aria-label="Site footer" className="bg-bgDark1 pt-10 lg:pt-20 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] lg:pb-[calc(4rem+env(safe-area-inset-bottom,0px))]">
+      <div className="safe-x container mx-auto w-4/5 md:w-11/12 lg:w-10/12 xl:w-4/5 2xl:w-2/3">
         <div className="flex flex-wrap justify-between">
           {/* Logo and About Section */}
           <div className="w-full lg:w-1/3 mb-16 lg:mb-0 text-center lg:text-left">

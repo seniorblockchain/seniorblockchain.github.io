@@ -26,7 +26,7 @@ export const Hero = () => {
 
   return (
     <section
-      className="w-full min-h-[60vh] flex items-center justify-center bg-[#17212b] pt-20"
+      className="w-full min-h-[60svh] flex items-center justify-center bg-[#17212b] pt-[calc(5rem+env(safe-area-inset-top,0px))]"
       id="home"
     >
       <div className="w-full max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 text-center">

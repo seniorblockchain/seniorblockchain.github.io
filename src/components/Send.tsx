@@ -50,10 +50,10 @@ const Send: React.FC = () => {
   }, [userFriendlyAddress]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-bgDark1 via-bgDark2 to-bgDark3 text-primaryText font-Inter">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-bgDark1 via-bgDark2 to-bgDark3 text-primaryText font-Inter">
       {/* Header */}
       <div className="bg-bgDark2/80 backdrop-blur-md border-b border-mainBorder">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="safe-x max-w-7xl mx-auto lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primaryColor">
@@ -70,7 +70,7 @@ const Send: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="safe-x max-w-7xl mx-auto lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Trading Panel */}
           <div className="lg:col-span-2">
@@ -193,6 +193,8 @@ const Send: React.FC = () => {
                     <div className="flex items-center gap-4">
                       <input
                         type="number"
+                        inputMode="decimal"
+                        enterKeyHint="done"
                         value={usdtAmount}
                         onChange={(e) => {
                           const value = parseFloat(e.target.value) || 0;
@@ -203,7 +205,7 @@ const Send: React.FC = () => {
                         min="0"
                         max={usdtBalance}
                         step="0.01"
-                        className="flex-1 bg-transparent text-2xl font-bold text-primaryText placeholder-secondaryText focus:outline-none"
+                        className="min-w-0 flex-1 bg-transparent text-2xl font-bold text-primaryText placeholder-secondaryText focus:outline-none"
                       />
                       <div className="flex items-center gap-2 bg-green-500/20 rounded-lg px-3 py-2">
                         <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-xs font-bold text-white">$</div>

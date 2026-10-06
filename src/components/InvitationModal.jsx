@@ -17,7 +17,7 @@ export const InvitationModal = ({ setIsOpen }) => (
         onClick={() => setIsOpen(false)}
       >
         <div
-          className="w-full h-screen sm:h-auto sm:w-3/4 md:w-3/5 lg:w-[1000px] xl:w-[1100px] sm:rounded-2xl bg-bgDarkTransparentLighter main-border-gray-darker py-12 px-8 sm:px-16 backdrop-blur-xl fixed sm:mb-8 fixed mx-auto z-50"
+          className="w-full h-[100dvh] max-h-[100dvh] overflow-y-auto overscroll-contain sm:h-auto sm:w-3/4 md:w-3/5 lg:w-[1000px] xl:w-[1100px] sm:rounded-2xl bg-bgDarkTransparentLighter main-border-gray-darker pt-[calc(3rem+env(safe-area-inset-top,0px))] pb-[calc(3rem+env(safe-area-inset-bottom,0px))] px-[max(2rem,env(safe-area-inset-left,0px),env(safe-area-inset-right,0px))] sm:px-16 backdrop-blur-xl relative mx-auto z-50"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex relative">
@@ -62,7 +62,11 @@ export const InvitationModal = ({ setIsOpen }) => (
                   <input
                     className="px-4 py-4 w-full text-gray-500 font-medium text-center placeholder-gray-500 outline-none border bg-gray-300 border-gray-300 rounded-lg focus:ring focus:ring-indigo-300"
                     id="newsletterInput3-1"
-                    type="text"
+                    type="email"
+                    autoComplete="email"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    enterKeyHint="done"
                     placeholder="Your email address"
                   />
                 </div>
@@ -77,12 +81,14 @@ export const InvitationModal = ({ setIsOpen }) => (
                 </div>
               </div>
             </div>
-            <div
-              className="fixed top-6 right-6 z-50 w-5 h-5 cursor-pointer text-[rgb(255,255,255,0.7)] hover:text-white transition"
+            <button
+              type="button"
+              aria-label="Close subscription dialog"
+              className="absolute -top-6 right-0 z-50 w-11 h-11 flex items-center justify-center cursor-pointer text-[rgb(255,255,255,0.7)] hover:text-white transition"
               onClick={() => setIsOpen(false)}
             >
-              <CloseIcon />
-            </div>
+              <span className="w-5 h-5"><CloseIcon /></span>
+            </button>
           </div>
         </div>
       </div>

@@ -14,6 +14,7 @@ export interface Props {
   image?: string;
   noindex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  themeColor?: string;
 }
 
 const {
@@ -22,6 +23,7 @@ const {
   image = SITE.ogImage,
   noindex = false,
   jsonLd,
+  themeColor = '#04111b',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
@@ -53,11 +55,13 @@ const structuredData = [...baseJsonLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jso
 ---
 
 <!doctype html>
-<html lang="en" dir="ltr" class="bg-bgDark2" data-overlayscrollbars-initialize>
+<html lang="en" dir="ltr" class="bg-bgDark2">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#04111b" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <!-- Every route uses a dark palette, even when the OS is in light mode. -->
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content={themeColor} />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Primary -->
@@ -108,7 +112,7 @@ const structuredData = [...baseJsonLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jso
       rel="stylesheet"
     />
   </head>
-  <body class="bg-bgDark2" data-overlayscrollbars-initialize>
+  <body class="bg-bgDark2">
     <main aria-label="Main content">
       <slot />
     </main>
@@ -166,7 +170,10 @@ if (poolLabels.length) {
 import { OverlayScrollbars } from "overlayscrollbars";
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Preserve native scrolling on touch devices; decorate desktop scrollbars only.
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   const bodyElement = document.querySelector('body');
+  if (!bodyElement) return;
 
   OverlayScrollbars(
     {
