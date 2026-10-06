@@ -1,15 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import exchangeConfig from '../data/exchange-config.json'
-import { formatPrice, getSpotPrice } from '../utils/exchangeMath'
+import { formatPrice, getPoolValue, getSpotPrice } from '../utils/exchangeMath'
 import '../styles/Theme.css'
 
 const spotPrice = getSpotPrice(exchangeConfig.pool)
 ---
 
 <Layout
-  title="How SBC Exchange Works — Pricing, Pool & Treasury | SBC"
-  description="Learn how SBC Exchange prices SBC against USDT on TON: constant-product pool formula, spot price, price impact and where buy and sell orders are routed."
+  title="How SBC Exchange Works | SBC"
+  description="Learn about SBC pricing, price impact and treasury payments."
 >
   <section class="guide-shell min-h-screen text-white">
     <div class="safe-x safe-bottom mx-auto max-w-4xl pt-[calc(2rem+env(safe-area-inset-top))]">
@@ -19,24 +19,24 @@ const spotPrice = getSpotPrice(exchangeConfig.pool)
             <div>
               <p class="text-[11px] uppercase tracking-[0.38em] text-cyan-200/55">Guide</p>
               <h1 class="mt-2 max-w-2xl text-3xl font-semibold text-white sm:text-4xl">How SBC Exchange works</h1>
-              <p class="mt-3 max-w-xl text-sm leading-7 text-slate-400">Everything runs from one JSON pool and one treasury wallet.</p>
+              <p class="mt-3 max-w-xl text-sm leading-7 text-slate-400">Pool prices and treasury payments explained.</p>
             </div>
-            <a href="/" class="guide-link w-full sm:w-auto">Back to home</a>
+            <a href="/" class="guide-link w-full sm:w-auto">Home</a>
           </div>
         </header>
 
         <div class="grid gap-4 sm:grid-cols-3">
           <div class="guide-card guide-stat px-4 py-4">
             <p class="guide-label">Base price</p>
-            <p class="mt-2 text-2xl font-semibold text-white">{formatPrice(spotPrice, 6)}</p>
+            <p data-pool-value="price" class="mt-2 text-2xl font-semibold text-white">{formatPrice(spotPrice, 6)}</p>
           </div>
           <div class="guide-card guide-stat px-4 py-4">
             <p class="guide-label">Pool value</p>
-            <p class="mt-2 text-2xl font-semibold text-white">$11,200.00</p>
+            <p data-pool-value="value" class="mt-2 text-2xl font-semibold text-white">{formatPrice(getPoolValue(exchangeConfig.pool), 2)}</p>
           </div>
           <div class="guide-card guide-stat px-4 py-4">
             <p class="guide-label">SBC total</p>
-            <p class="mt-2 text-2xl font-semibold text-white">{exchangeConfig.pool.sbc}</p>
+            <p data-pool-value="sbc" class="mt-2 text-2xl font-semibold text-white">{exchangeConfig.pool.sbc}</p>
           </div>
         </div>
 
@@ -44,7 +44,7 @@ const spotPrice = getSpotPrice(exchangeConfig.pool)
           <div class="flex items-center justify-between gap-4">
             <div>
               <p class="guide-label">Workflow</p>
-              <h2 class="mt-2 text-2xl font-semibold text-white">Setup</h2>
+              <h2 class="mt-2 text-2xl font-semibold text-white">How it works</h2>
             </div>
             <div class="guide-badge">Live</div>
           </div>
@@ -56,15 +56,15 @@ const spotPrice = getSpotPrice(exchangeConfig.pool)
             </div>
             <div class="guide-row">
               <span class="guide-step">02</span>
-              <p>Buy flow routes USDT to the treasury wallet.</p>
+              <p>Buying sends USDT to the treasury.</p>
             </div>
             <div class="guide-row">
               <span class="guide-step">03</span>
-              <p>Sell flow routes SBC to the treasury wallet.</p>
+              <p>Selling sends SBC to the treasury.</p>
             </div>
             <div class="guide-row">
               <span class="guide-step">04</span>
-              <p>Quotes refresh from the current pool data.</p>
+              <p>Quotes use the current pool reserves.</p>
             </div>
           </div>
         </article>
@@ -74,15 +74,15 @@ const spotPrice = getSpotPrice(exchangeConfig.pool)
             <p class="guide-label">Formula</p>
             <h2 class="mt-2 text-2xl font-semibold text-white">Constant product</h2>
             <div class="guide-formula mt-5">k = reserve_SBC x reserve_USDT</div>
-            <p class="mt-4 text-sm leading-7 text-slate-400">Larger orders create larger price impact.</p>
+            <p class="mt-4 text-sm leading-7 text-slate-400">Larger trades have more price impact.</p>
           </section>
 
           <section class="guide-card px-5 py-5 sm:px-6">
             <p class="guide-label">Treasury</p>
             <h2 class="mt-2 text-2xl font-semibold text-white">Default values</h2>
             <div class="mt-5 space-y-3 text-sm text-slate-300">
-              <p>USDT reserve: {exchangeConfig.pool.usdt}</p>
-              <p>SBC total: {exchangeConfig.pool.sbc}</p>
+              <p>USDT reserve: <span data-pool-value="usdt">{exchangeConfig.pool.usdt}</span></p>
+              <p>SBC total: <span data-pool-value="sbc">{exchangeConfig.pool.sbc}</span></p>
               <p class="break-all text-slate-400">{exchangeConfig.treasuryWallet}</p>
             </div>
           </section>

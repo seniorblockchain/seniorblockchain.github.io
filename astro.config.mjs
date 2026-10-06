@@ -17,7 +17,7 @@ export default defineConfig({
         id: '/',
         name: 'SBC EX',
         short_name: 'SBC EX',
-        description: 'Buy and sell SBC with USDT on the TON blockchain — fast, non-custodial swaps from your wallet.',
+        description: 'Buy and sell SBC with USDT from your TON wallet.',
         lang: 'en',
         dir: 'ltr',
         start_url: '/?source=pwa',
@@ -50,13 +50,20 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // Manual registration needs these flags for autoUpdate to activate new workers.
+        skipWaiting: true,
+        clientsClaim: true,
         // Pages are fetched network-first (see runtimeCaching) so every route keeps its own HTML
         navigateFallback: null,
         globPatterns: ['**/*.{js,css,html,svg,png,ico,json}'],
-        globIgnores: ['og-image.png', '**/*.jpg', 'api/**'],
+        globIgnores: ['og-image.png', '**/*.jpg', '**/*.html', 'api/**', 'exchange-config.json'],
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         cleanupOutdatedCaches: true,
         runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname === '/exchange-config.json',
+            handler: 'NetworkOnly',
+          },
           {
             urlPattern: ({ request }) => request.mode === 'navigate',
             handler: 'NetworkFirst',

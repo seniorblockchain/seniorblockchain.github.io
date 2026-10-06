@@ -90,7 +90,7 @@ const structuredData = [...baseJsonLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jso
     <meta property="og:image" content={imageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="SBC Exchange — buy and sell SBC with USDT on TON" />
+    <meta property="og:image:alt" content="Buy and sell SBC with USDT on TON" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -129,8 +129,37 @@ const structuredData = [...baseJsonLd, ...(jsonLd ? (Array.isArray(jsonLd) ? jso
 
 <script>
 import { registerSW } from 'virtual:pwa-register';
+import { subscribePool } from '../utils/livePool';
+import { formatPrice, getPoolValue, getSpotPrice } from '../utils/exchangeMath';
 
-registerSW({ immediate: true });
+registerSW({
+  immediate: true,
+  onRegisteredSW(_url, registration) {
+    if (registration) {
+      const checkForUpdate = () => {
+        if (navigator.onLine) void registration.update().catch(() => {});
+      };
+      checkForUpdate();
+      window.setInterval(checkForUpdate, 60_000);
+    }
+  },
+});
+
+const poolLabels = document.querySelectorAll<HTMLElement>('[data-pool-value]');
+if (poolLabels.length) {
+  subscribePool((pool) => {
+    const values = {
+      price: formatPrice(getSpotPrice(pool), 6),
+      value: formatPrice(getPoolValue(pool), 2),
+      sbc: String(pool.sbc),
+      usdt: String(pool.usdt),
+    };
+    poolLabels.forEach((label) => {
+      const key = label.dataset.poolValue as keyof typeof values;
+      if (key in values) label.textContent = values[key];
+    });
+  });
+}
 </script>
 
 <script>

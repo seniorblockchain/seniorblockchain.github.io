@@ -4,6 +4,9 @@ import { handleSendUsdt } from "../payments/sendUsdt";
 import { CustomConnectButton } from "./CustomConnectButton";
 import { getJettonWalletAddress } from "../utils/getJettonWalletAddress";
 import { USDT_MASTER_ADDRESS } from "../utils/transactionConfig";
+import exchangeConfig from '../data/exchange-config.json';
+import { formatCompactNumber, formatPercent, formatPrice, getBuyQuote, getSpotPrice } from '../utils/exchangeMath';
+import { useLivePool } from '../utils/useLivePool';
 
 const Send: React.FC = () => {
   const [tonConnectUI] = useTonConnectUI();
@@ -13,6 +16,9 @@ const Send: React.FC = () => {
   const [usdtBalance, setUsdtBalance] = useState<number>(0);
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'buy' | 'portfolio' | 'history' | 'analysis'>('buy');
+  const pool = useLivePool(exchangeConfig.pool);
+  const spotPrice = getSpotPrice(pool);
+  const quote = getBuyQuote(pool, usdtAmount);
 
   // Fetch USDT balance when wallet is connected
   useEffect(() => {
@@ -72,7 +78,7 @@ const Send: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
               <div className="bg-bgDark2/50 backdrop-blur-sm rounded-2xl p-4 border border-mainBorder">
                 <div className="text-secondaryText text-xs uppercase tracking-wider mb-1">SBC Price</div>
-                <div className="text-primaryColor text-lg font-bold">$0.01</div>
+                <div className="text-primaryColor text-lg font-bold">{formatPrice(spotPrice, 6)}</div>
                 <div className="text-green-400 text-xs">+5.2%</div>
               </div>
               <div className="bg-bgDark2/50 backdrop-blur-sm rounded-2xl p-4 border border-mainBorder">
@@ -228,11 +234,11 @@ const Send: React.FC = () => {
                   <div className="bg-bgDark3/50 rounded-xl p-4 mb-6">
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-secondaryText text-sm">You Receive</span>
-                      <span className="text-secondaryText text-sm">≈ ${(usdtAmount * 100 * 0.01).toFixed(2)}</span>
+                      <span className="text-secondaryText text-sm">≈ {formatPrice(quote.amountOut * spotPrice, 2)}</span>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="flex-1 text-2xl font-bold text-primaryColor">
-                        {usdtAmount ? (usdtAmount * 100).toFixed(0) : "0"}
+                        {formatCompactNumber(quote.amountOut, 4)}
                       </div>
                       <div className="flex items-center gap-2 bg-primaryColor/20 rounded-lg px-3 py-2">
                         <div className="w-6 h-6 bg-primaryColor rounded-full flex items-center justify-center text-xs font-bold text-white">S</div>
@@ -245,15 +251,15 @@ const Send: React.FC = () => {
                   <div className="bg-bgDark3/30 rounded-xl p-4 mb-6 space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-secondaryText">Exchange Rate</span>
-                      <span className="text-primaryText">1 USDT = 100 SBC</span>
+                      <span className="text-primaryText">1 SBC = {formatPrice(spotPrice, 6)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-secondaryText">Network Fee</span>
                       <span className="text-primaryText">~0.05 TON</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-secondaryText">Slippage</span>
-                      <span className="text-primaryText">0.1%</span>
+                      <span className="text-secondaryText">Price impact</span>
+                      <span className="text-primaryText">{formatPercent(quote.priceImpact)}</span>
                     </div>
                   </div>
 
@@ -341,11 +347,11 @@ const Send: React.FC = () => {
                             </div>
                             <div className="flex justify-between items-center">
                               <span className="text-secondaryText">Estimated SBC:</span>
-                              <span className="text-primaryColor font-bold">{(usdtBalance * 100).toFixed(0)} SBC</span>
+                              <span className="text-primaryColor font-bold">{formatCompactNumber(getBuyQuote(pool, usdtBalance).amountOut, 4)} SBC</span>
                             </div>
                             <div className="flex justify-between items-center">
                               <span className="text-secondaryText">Portfolio Value:</span>
-                              <span className="text-green-400 font-bold">${(usdtBalance + (usdtBalance * 100 * 0.01)).toFixed(2)}</span>
+                              <span className="text-green-400 font-bold">{formatPrice(usdtBalance, 2)}</span>
                             </div>
                           </div>
                         </div>
@@ -540,7 +546,7 @@ const Send: React.FC = () => {
                       <h3 className="text-lg font-bold text-primaryText mb-4">💰 Current Metrics</h3>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="text-center">
-                          <div className="text-xl font-bold text-primaryColor">$0.01</div>
+                          <div className="text-xl font-bold text-primaryColor">{formatPrice(spotPrice, 6)}</div>
                           <div className="text-secondaryText text-sm">Current Price</div>
                           <div className="text-green-400 text-xs mt-1">+5.2% ↗️</div>
                         </div>

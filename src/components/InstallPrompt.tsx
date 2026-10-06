@@ -72,7 +72,7 @@ export const InstallPrompt: React.FC = () => {
     try {
       localStorage.setItem(DISMISS_KEY, String(Date.now()));
     } catch {
-      // storage unavailable — prompt simply shows again next visit
+      // Storage unavailable. Show the prompt again next visit.
     }
   };
 
@@ -108,7 +108,7 @@ export const InstallPrompt: React.FC = () => {
                 </p>
               ) : (
                 <p className="mt-0.5 text-[13px] leading-5 text-slate-400">
-                  Trade SBC faster — full screen, one tap from your home screen.
+                  Open SBC from your home screen.
                 </p>
               )}
             </div>

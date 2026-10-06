@@ -12,8 +12,8 @@ import {
   getBuyQuote,
   getSellQuote,
   getSpotPrice,
-  type PoolState,
 } from '../utils/exchangeMath';
+import { useLivePool } from '../utils/useLivePool';
 import { fetchWalletBalances, type WalletBalances } from '../utils/fetchWalletBalances';
 import { InstallPrompt } from './InstallPrompt';
 
@@ -165,7 +165,7 @@ const WalletPanel: React.FC<WalletPanelProps> = ({ address, balances, sbcPriceUs
                   <p className="text-[15px] font-semibold tabular-nums text-white">
                     {formatCompactNumber(row.amount, row.digits)}
                   </p>
-                  <p className="text-xs tabular-nums text-slate-500">{row.usd === null ? '—' : formatPrice(row.usd, 2)}</p>
+                  <p className="text-xs tabular-nums text-slate-500">{row.usd === null ? 'N/A' : formatPrice(row.usd, 2)}</p>
                 </>
               )}
             </div>
@@ -175,7 +175,7 @@ const WalletPanel: React.FC<WalletPanelProps> = ({ address, balances, sbcPriceUs
 
       {updatedAt && (
         <p className="mt-3 text-center text-[11px] text-slate-500">
-          Updated {updatedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · SBC valued at pool price
+          Updated {updatedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · SBC at pool price
         </p>
       )}
     </div>
@@ -196,7 +196,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
   const [copied, setCopied] = useState(false);
   const walletMenuRef = useRef<HTMLDivElement>(null);
 
-  const pool: PoolState = config.pool;
+  const pool = useLivePool(config.pool);
   const numericAmount = Number(tradeAmount) || 0;
   const spotPrice = getSpotPrice(pool);
   const activeQuote = mode === 'buy' ? getBuyQuote(pool, numericAmount) : getSellQuote(pool, numericAmount);
@@ -450,7 +450,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
           <h1 className="mt-4 text-[28px] font-bold leading-tight tracking-tight text-white sm:text-4xl">
             {config.content.headline}
           </h1>
-          <p className="mt-2 text-sm text-slate-400 sm:text-base">Swap SBC and USDT instantly on the TON blockchain — straight from your wallet.</p>
+          <p className="mt-2 text-sm text-slate-400 sm:text-base">Trade SBC with USDT from your TON wallet.</p>
 
           <div className="mt-6 grid grid-cols-3 divide-x divide-white/[0.07] rounded-2xl border border-white/[0.08] bg-white/[0.03] py-3 backdrop-blur">
             {stats.map((stat) => (
@@ -635,13 +635,13 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
                       <div className="flex justify-between">
                         <dt className="text-slate-500">Execution price</dt>
                         <dd className="tabular-nums text-slate-200">
-                          {activeQuote.executionPrice ? formatPrice(activeQuote.executionPrice, 6) : '—'}
+                          {activeQuote.executionPrice ? formatPrice(activeQuote.executionPrice, 6) : 'N/A'}
                         </dd>
                       </div>
                       <div className="flex justify-between">
                         <dt className="text-slate-500">Price impact</dt>
                         <dd className={`tabular-nums ${numericAmount > 0 ? impactTone(activeQuote.priceImpact) : 'text-slate-200'}`}>
-                          {numericAmount > 0 ? formatPercent(activeQuote.priceImpact) : '—'}
+                          {numericAmount > 0 ? formatPercent(activeQuote.priceImpact) : 'N/A'}
                         </dd>
                       </div>
                       <div className="flex justify-between">
@@ -669,7 +669,7 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
             <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l7 4v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V7l7-4z" />
             </svg>
-            Non-custodial · you sign every transaction
+            Confirm each transfer in your wallet
           </p>
         </motion.section>
 

@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import {useTonConnectUI, useTonAddress } from "@tonconnect/ui-react";
 import { CustomConnectButton } from "./CustomConnectButton";
+import exchangeConfig from '../data/exchange-config.json';
+import { formatPrice, getSellQuote, getSpotPrice } from '../utils/exchangeMath';
+import { useLivePool } from '../utils/useLivePool';
 
 const Receive: React.FC = () => {
   const [tonConnectUI] = useTonConnectUI();
   const userFriendlyAddress = useTonAddress();
   const rawAddress = useTonAddress(false);
   const [sbcAmount, setSBCAmount] = useState<number>(0);
+  const pool = useLivePool(exchangeConfig.pool);
+  const spotPrice = getSpotPrice(pool);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-bgDark1 via-bgDark2 to-bgDark3 text-primaryText font-Inter">
@@ -36,7 +41,7 @@ const Receive: React.FC = () => {
             {/* Market Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">              <div className="bg-bgDark2/50 backdrop-blur-sm rounded-2xl p-4 border border-mainBorder">
                 <div className="text-secondaryText text-xs uppercase tracking-wider mb-1">SBC Price</div>
-                <div className="text-red-400 text-lg font-bold">$0.00</div>
+                <div className="text-red-400 text-lg font-bold">{formatPrice(spotPrice, 6)}</div>
                 <div className="text-red-400 text-xs">Selling Disabled</div>
               </div>              <div className="bg-bgDark2/50 backdrop-blur-sm rounded-2xl p-4 border border-mainBorder">
                 <div className="text-secondaryText text-xs uppercase tracking-wider mb-1">Sell Volume</div>
@@ -106,7 +111,7 @@ const Receive: React.FC = () => {
               <div className="bg-bgDark3/50 rounded-xl p-4 mb-6">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-secondaryText text-sm">You Receive</span>
-                  <span className="text-secondaryText text-sm">≈ ${(sbcAmount * 0.0098).toFixed(4)}</span>
+                  <span className="text-secondaryText text-sm">≈ {formatPrice(getSellQuote(pool, sbcAmount).amountOut, 4)}</span>
                 </div>
                 <div className="flex items-center gap-4">                  <div className="flex-1 text-2xl font-bold text-red-400">
                     0.0000
