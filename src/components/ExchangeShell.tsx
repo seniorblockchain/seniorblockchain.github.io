@@ -126,7 +126,7 @@ const WalletPanel: React.FC<WalletPanelProps> = ({ address, balances, sbcPriceUs
             onClick={onRefresh}
             disabled={isLoading}
             aria-label="Refresh balances"
-            className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.06] text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-60"
+            className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/[0.06] text-slate-300 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-60 md:h-9 md:w-9"
           >
             <svg className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h5M20 20v-5h-5M5.1 15A7 7 0 0 0 18 17.7M18.9 9A7 7 0 0 0 6 6.3" />
@@ -137,7 +137,7 @@ const WalletPanel: React.FC<WalletPanelProps> = ({ address, balances, sbcPriceUs
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View on Tonviewer"
-            className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.06] text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+            className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/[0.06] text-slate-300 transition-colors hover:bg-white/10 hover:text-white md:h-9 md:w-9"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
@@ -471,11 +471,12 @@ export const ExchangeShell: React.FC<{ config: ExchangeConfig }> = ({ config }) 
           {userFriendlyAddress && (
             <motion.section
               key="wallet"
+              aria-label="Wallet balances"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="mx-auto mt-5 hidden max-w-[480px] md:block"
+              className="mx-auto mb-5 w-full max-w-[480px] md:mb-0 md:mt-5"
             >
               <WalletPanel
                 address={userFriendlyAddress}
